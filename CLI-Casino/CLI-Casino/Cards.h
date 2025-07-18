@@ -45,3 +45,11 @@ typedef struct deckNode {
 
 //void removefrom(PDECKNODE* existing, CARD c);
 
+
+
+//todo: upwards align 2,3,4,5
+//temporary function while linked list hasn't been made yet
+void loaddeck(CARD d[]);
+
+
+void paintHand(CARD d[], int handsize);
