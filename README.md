@@ -72,8 +72,37 @@ REQ-FILEIO-007 – The FileIO module MUST handle file read and write errors grac
 
 ## Module - Cards
 ### Module Description
+The cards module is for playing cards. it is responsible for:
+    -card structure
+    -initializing a deck of cards
+    -drawing and discarding cards
+    -printing hands to the screen
 ### Function Descriptions
+//initializes a deck of 52 cards in the drawpile
+void initDeck(FULLDECK fd);
+
+//reshuffles draw and discard piles
+void shuffle(FULLDECK fd);
+
+//removes card from drawpile and sends to discardpile
+void discard(FULLDECK fd, CARD c);
+
+//takes a card from drawpile and returns a copy of it. decknode is sent to discard pile
+CARD drawCard(FULLDECK fd);
+
+//draws hand to screen
+void displayHand(CARD d[], int handsize);
+
+//frees the deck linke list
+void destroyDeck(FULLDECK fd);
+
 ### Requirements
+REQ-CARDS-001 - the cards module must be able to initialize a deck of 52 cards to be used by other card games
+REQ-CARDS-002 - the cards module must be able to draw individual cards from the deck and return them
+REQ-CARDS-003 - the cards module must be able to remove cards from the deck so that they cannot be drawn multiple times
+REQ-CARDS-004 - the cards module must be able to access the card art stored in a separate file in order to draw cards
+REQ-CARDS-005 - the cards module must be able to display a hand of multiple cards on the screen next to each other 
+REQ-CARDS-006 - the cards module must be able to shuffle the discard and draw piles to return the deck to its initial state
 
 ## Module - Slots
 ### Module Description
@@ -153,5 +182,39 @@ REQ-POKER-010 – The Poker module MUST validate all user inputs (e.g., bet amou
 
 ## Module - Blackjack
 ### Module Description
+the blackjack module is responsible for playing the game of blackjack. players should be able to bet money, play the game, quit the game etc.
 ### Function Descriptions
+
+//main loop that runs the game. calls other functions
+runBJREQ
+
+//calculates the score of given cards. check if player busted
+scoreHand
+
+//compares the scores of two players (dealer and player), and checks for blackjack(21)
+compareScores
+
+//allows user to input a bet, subtracts from balance
+bet
+
+//plays the dealers turn. calls regular game action functions
+dealerTurn
+
+//game actions:
+//draws card
+hit
+//skips your turn
+stand
+//splits your cards into 2 hands, splits bet
+split
+//doubles bet, draw a single card
+double down
+//quit out and keep a portion of bet
+surrender
+
 ### Requirements
+REQ-BJ-001 - the blackjack module must be able to accept player bets and access/modify their balance
+REQ-BJ-002 - the blackjack module must be able to score 2+ card hands and determine whether they are over 21 or not
+REQ-BJ-003 - the blackjack module must be able to compare the scores of two players and determine the winner of the round
+REQ-BJ-004 - the blackjack module must let the player make decisions during the round and act appropriately
+REQ-BJ-005 - the blackjack module must let the player quit the game and return to the main menu
