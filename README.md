@@ -43,8 +43,32 @@ REQ-IOC-008 - The IOController MUST delegate all file and game logic to external
 
 ## Module - FileIO
 ### Module Description
+This module has to read a file (if it exits, if it doesnt make it), and save all users (usernamen and balance) to an linked list.
+
 ### Function Descriptions
+///Reads the file, and calls AddUser() to add all users to a linked list
+ReadFile()
+
+///Takes in a username and balance and adds user to a linked list.
+AddUser(char* username, double balance)
+
+///It will take in a user, and delete it from the linked list.
+DeleteUser(USER u)
+
 ### Requirements
+REQ-FILEIO-001 – The FileIO module MUST check for the existence of the user file on startup and create a new file if it does not exist.
+
+REQ-FILEIO-002 – The FileIO module MUST read all user data (username and balance) from the file and load it into a linked list on initialization.
+
+REQ-FILEIO-003 – The FileIO module MUST call AddUser() for each user entry found in the file to populate the linked list.
+
+REQ-FILEIO-004 – The FileIO module MUST allow adding a new user with a username and balance to the linked list using AddUser().
+
+REQ-FILEIO-005 – The FileIO module MUST allow deleting an existing user from the linked list using DeleteUser().
+
+REQ-FILEIO-006 – The FileIO module MUST save all current users from the linked list back to the file when requested or on program exit.
+
+REQ-FILEIO-007 – The FileIO module MUST handle file read and write errors gracefully, ensuring no data corruption occurs.
 
 ## Module - Cards
 ### Module Description
@@ -86,8 +110,46 @@ REQ-SLOTS-010 - The Slots module MUST exit cleanly when the user chooses to quit
 
 ## Module - Poker
 ### Module Description
+The Poker module is responsible for running the Poker game. Ie. calculate the value of different hands, compare different hands, discarde X cards, deal x cards, betting system, and quit the game.
+
 ### Function Descriptions
+///Takes in a poker hand (5 cards) and checks what the highest possible hand is, it will make sure it is returning the highest possible hand by checking from highest value to lowest, and exit the functions as soon as it meets the requirements for a hand
+CalculateHandValue(CARD* c)
+
+///Takes in 2 arrays of 5 cards, aswell as their hand type (from CalculateHandValue()). It will compare the two hand values, if one is higher it will select that one as the winner, if they are both the same, it will do more in depth checks (if both hands have a single pair, but one of the two has a pair of As and the other a pair of 5s it will select the As as winner) 
+CompareHands()
+
+///It will take in an arry of 5 cards, ask the user how many and which cards they want to discard 0-4, and it will call discard(), from the card module, to add those cards to the discard pile.
+DiscardXCards(CARD* c)
+
+///It will take in an array of cards, as well as how many cards it must deal (if at the bigining of the game 5, if after discard, however many cards were discarded), it will call drawCard(), and ask fro how ever many cards it needs.
+DealXCards(CARD* c, int Num)
+
+///It will allow the user to bet however micht they want.
+Bet()
+
+///Quits the module
+Quit()
 ### Requirements
+REQ-POKER-001 – The Poker module MUST evaluate any 5-card hand and determine the highest possible Poker hand based on standard hand rankings.
+
+REQ-POKER-002 – The Poker module MUST compare two 5-card hands and declare a winner, using tiebreakers if both hands have the same rank.
+
+REQ-POKER-003 – The Poker module MUST allow the player to select 0–4 cards to discard from their hand.
+
+REQ-POKER-004 – The Poker module MUST deal a specified number of cards to the player to replace any discarded cards.
+
+REQ-POKER-005 – The Poker module MUST support a betting system where the player can place, raise, or fold bets during gameplay.
+
+REQ-POKER-006 – The Poker module MUST accept and respond to keyboard input for all menu navigation and in-game actions.
+
+REQ-POKER-007 – The Poker module MUST call the Card module’s drawCard() function when dealing new cards.
+
+REQ-POKER-008 – The Poker module MUST call the Card module’s discard() function to add discarded cards to the discard pile.
+
+REQ-POKER-009 – The Poker module MUST allow the player to quit the game at any time and return to the main menu.
+
+REQ-POKER-010 – The Poker module MUST validate all user inputs (e.g., bet amounts, card selections) and handle invalid inputs gracefully.
 
 ## Module - Blackjack
 ### Module Description
