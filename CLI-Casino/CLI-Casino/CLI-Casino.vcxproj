@@ -142,6 +142,7 @@
     <ClInclude Include="IOController.h" />
     <ClInclude Include="Poker.h" />
     <ClInclude Include="Slots.h" />
+    <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
