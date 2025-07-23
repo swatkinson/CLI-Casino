@@ -3,8 +3,13 @@
 
 #include "IOController.h"
 #include "User.h"
+#include <Windows.h>
+#include <time.h>
 
 int main(void) {
+	
+	srand(time(NULL));		     // Seed the random number generator
+	SetConsoleOutputCP(CP_UTF8); //Allow UTF8 Console output
 
 	// Check & run command line args (will exit if there are args, doesnt run main logic)
 
