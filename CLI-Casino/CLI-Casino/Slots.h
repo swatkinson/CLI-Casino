@@ -9,7 +9,7 @@
 #include "User.h"
 
 /// Return symbol value multiplier
-double GetMultiplier(const char* symbol);
+double GetMultiplier(const char* Symbol);
 
 /// Calculate the amount won based on symbols and bet amount
-double CalculateWinnings(const char* s1, const char* s2, const char* s3, int Bet);
+double CalculateWinnings(const char* S1, const char* S2, const char* s3, int Bet);

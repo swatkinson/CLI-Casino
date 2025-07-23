@@ -15,29 +15,29 @@
 const char* Symbols[] = { "💎", "💲", "🍀", "🪙", "🍒" };
 
 // Returns payout multiplier for a given symbol
-double GetMultiplier(const char* symbol) {
-    if (strcmp(symbol, "💎") == 0) return 10;
-    if (strcmp(symbol, "💲") == 0) return 8;
-    if (strcmp(symbol, "🍀") == 0) return 6;
-    if (strcmp(symbol, "🪙") == 0) return 4;
-    if (strcmp(symbol, "🍒") == 0) return 2;
+double GetMultiplier(const char* Symbol) {
+    if (strcmp(Symbol, "💎") == 0) return 10;
+    if (strcmp(Symbol, "💲") == 0) return 8;
+    if (strcmp(Symbol, "🍀") == 0) return 6;
+    if (strcmp(Symbol, "🪙") == 0) return 4;
+    if (strcmp(Symbol, "🍒") == 0) return 2;
 }
 
-double CalculateWinnings(const char* s1, const char* s2, const char* s3, int Bet) {
+double CalculateWinnings(const char* S1, const char* S2, const char* S3, int Bet) {
     // Winnings if all 3 symbols match
-    if (strcmp(s1, s2) == 0 && strcmp(s2, s3) == 0) {
-        return Bet * GetMultiplier(s1);
+    if (strcmp(S1, S2) == 0 && strcmp(S2, S3) == 0) {
+        return Bet * GetMultiplier(S1);
     }
 
     // Winnings if 2 of 3 symbols match
-    if (strcmp(s1, s2) == 0) {
-        return Bet * GetMultiplier(s1) / 2;
+    if (strcmp(S1, S2) == 0) {
+        return Bet * GetMultiplier(S1) / 2;
     }
-    else if (strcmp(s1, s3) == 0) {
-        return Bet * GetMultiplier(s1) / 2;
+    else if (strcmp(S1, S3) == 0) {
+        return Bet * GetMultiplier(S1) / 2;
     }
-    else if (strcmp(s2, s3) == 0) {
-        return Bet * GetMultiplier(s2) / 2;
+    else if (strcmp(S2, S3) == 0) {
+        return Bet * GetMultiplier(S2) / 2;
     }
 
     // No match
