@@ -231,6 +231,7 @@ void displayHand(CARD c[], int handsize) {
 		printf("\n"); //adds newline the current line for all cars has been drawn
 	}
 	fclose(fp); //important
+	SetConsoleOutputCP(CP_UTF8);//sets it back so other people's stuff doesnt get messed up
 }
 
 
