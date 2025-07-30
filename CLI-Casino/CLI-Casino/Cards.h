@@ -4,12 +4,20 @@
 
 #pragma once
 
+//basically, we're treating the text file like a block of memory
+//card art is a fixed size, so we can essentially treat the start of each card as an address
+//its dimensions are 25 x 17, or 25 'bits' and 17 'bits' per 'byte'/'address' 
+//card art is unfinished so currently placeholder values
+#define LINE_LEN 25
+#define NUM_LINES 17
+#define ADDR LINE_LEN * NUM_LINES
+#define CARDS_IN_DECK 52
+
+
 typedef enum suit {
-	//should i reorder these in proper suit order? what even is proper suit order?
-	//does anyone even care?
-	heart,
-	diamond,
 	club,
+	diamond,
+	heart,
 	spade
 }SUIT;
 
@@ -61,11 +69,11 @@ CARD copyCard(CARD c);
 
 
 //linked list (decknode) functions:
-void addCardtoPile(PDECKNODE* existing, CARD c);
+void addCardtoPile(PDECKNODE* head, CARD c);
 
-CARD removeCardfromPile(PDECKNODE* existing, int index);//not a typical remove function, dont worry about it
+CARD removeCardfromPile(PDECKNODE* head, int index);//not a typical remove function, dont worry about it
 
-void destroyPile(PDECKNODE* existing);
+void destroyPile(PDECKNODE* head);
 
 
 PDECKNODE initDrawpile(); //initializes a deck of 52 cards in the drawpile

@@ -8,14 +8,7 @@
 #include <stdlib.h>
 #include <Windows.h>
 
-//basically, we're treating the text file like a block of memory
-//card art is a fixed size, so we can essentially treat the start of each card as an address
-//its dimensions are 25 x 17, or 25 'bits' and 17 'bits' per 'byte'/'address' 
-//card art is unfinished so currently placeholder values
-#define LINE_LEN 7 //25
-#define NUM_LINES 3 //17
-#define BYTE LINE_LEN * NUM_LINES
-#define CARDS_IN_DECK 52
+
 
 
 //code probably runs
@@ -32,6 +25,8 @@ CARD createCard(SUIT s, RANK r, int address) {
 	return c;
 }
 
+//keeping this for 'future proofing'
+	//steve always made these even when he didn't need to so i'm just copying him
 CARD copyCard(CARD c) {
 	//self explanatory
 	CARD copy = createCard(c.sui, c.ran, c.address);
@@ -41,28 +36,28 @@ CARD copyCard(CARD c) {
 
 //linked list (decknode) functions
 
-void addCardtoPile(PDECKNODE* existing, CARD c) {
+void addCardtoPile(PDECKNODE* head, CARD c) {
 	//standard malloc
 	PDECKNODE newnode = (PDECKNODE)malloc(sizeof(DECKNODE));
 	if (newnode == NULL) {
-		fprintf(stderr, "no mem :(\n");
+		fprintf(stderr, "no mem on allocating cards :(\n");
 		exit(EXIT_FAILURE);
 	}
 	else {
 		//its a linked list, what more to say
 		newnode->car = copyCard(c);
-		newnode->next = *existing;
-		*existing = newnode;
+		newnode->next = *head;
+		*head = newnode;
 	}
 }
 
 //this function is basically used for card draw, so we don't look for a specific card like we normally would with a remove function
 //instead we take an index, move to it, and remove that card (whatever it is)
-CARD removeCardfromPile(PDECKNODE* existing, int index) {
-	PDECKNODE current = *existing;
+CARD removeCardfromPile(PDECKNODE* head, int index) {
+	PDECKNODE current = *head;
 	//if at top of list
 	if (current != NULL && index == 0) {
-		*existing = current->next;
+		*head = current->next;
 
 		CARD removed = copyCard(current->car);
 		//dont need to delete card since its in stack
@@ -94,9 +89,9 @@ CARD removeCardfromPile(PDECKNODE* existing, int index) {
 	//since we still need the regular ones for init and stuff. so not worth it
 }
 
-void destroyPile(PDECKNODE* existing) {
+void destroyPile(PDECKNODE* head) {
 	//deletes linked list, nothing unusual
-	PDECKNODE current = *existing;
+	PDECKNODE current = *head;
 	while (current != NULL) {
 		PDECKNODE temp = current;
 		current = current->next;
@@ -116,7 +111,7 @@ PDECKNODE initDrawpile() {
 	//both suit and rank are enums so you can just do this
 	for (int i = 0; i <= spade;i++) {
 		for (int j = 0; j <= King;j++) {
-			CARD c = createCard(i, j, cardnum * BYTE);
+			CARD c = createCard(i, j, cardnum * ADDR);
 			cardnum++;
 			addCardtoPile(&drawp, c);
 		}
@@ -137,9 +132,8 @@ CARD drawCard(FULLDECK* fd) {
 		shuffle(fd);
 	}
 
+	//srand in main or something
 	//the reason it doesnt matter that deck is unshuffled:
-	srand(time(NULL));
-
 	//basically, instead of shuffling the deck so that the top card is random, we just pick randomly from anywhere in the deck
 	CARD drawn = removeCardfromPile(&fd->drawPile, (rand() % fd->remainingInDraw)); 
 			//mod remaining so that it doesnt pick card 49 when there's only 30 cards left in the deck
@@ -157,6 +151,7 @@ CARD drawCard(FULLDECK* fd) {
 
 //i wanted to call this reshuffle but was vetoed
 void shuffle(FULLDECK* fd) {
+	//keeping this as is because otherwise i'd have to make new functions and that'd be annoying
 
 	int discardnum = CARDS_IN_DECK - fd->remainingInDraw; //should be self-evident
 
@@ -184,7 +179,7 @@ FULLDECK initDeck() {
 
 	//facedown card for dealer cards and rivers and etc. not actually a card and should always be accesible, so its placed here
 	//shouldn't be used for anything other than display functions, set its rank and suit to -1 either way
-	fd.facedown = createCard(-1, -1, (CARDS_IN_DECK) * BYTE);//starts at 0, so 52 is card no. 53
+	fd.facedown = createCard(-1, -1, (CARDS_IN_DECK) * ADDR);//starts at 0, so 52 is card no. 53
 
 	return fd;
 }
@@ -248,7 +243,7 @@ void loaddeck(CARD d[]) {
 			CARD c;
 			c.sui = i;
 			c.ran = j;
-			c.address = a * BYTE;
+			c.address = a * ADDR;
 			d[a] = c;
 			a++;
 		}
