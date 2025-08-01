@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Slots.h"
+#include "Blackjack.h"
 
 void MainMenu(USER User) {
     while (1)
@@ -30,8 +31,7 @@ void MainMenu(USER User) {
             break;
         case 'c':
             WipeScreen();
-            printf("\n[DEBUG] Blackjack selected\n\n");
-            // BlackjackGame(User);
+            runBJ(User);
             break;
         case 'q':
             WipeScreen();
@@ -46,6 +46,25 @@ void MainMenu(USER User) {
 }
 
 void DisplayMainMenuOptions() {
+    //art by sebastian
+    printf("\033[6m\033[93m#  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #\n");
+    printf("*                                                                                         *\n");
+    printf("#                                                                                         #\n");
+    printf("*                                                                                         *\n");
+    printf("#                                                                                         #\n");
+    printf("*       ######          ##           #####      ########    ##      ##        ######      *\n");
+    printf("#     ###              ####        ##     ##       ##       ###     ##      ##      ##    #\n");
+    printf("*   ##                 #  #       #                ##       ####    ##     ##        ##   *\n");
+    printf("#   ##                #    #       ##              ##       ## ##   ##    ##          ##  #\n");
+    printf("*   ##               ########        #####         ##       ##  ##  ##    #            #  *\n");
+    printf("#   ##              #        #           ###       ##       ##   ## ##    ##          ##  #\n");
+    printf("*   ##             ##        ##            ##      ##       ##    ####     ##        ##   *\n");
+    printf("#     ###         ##          ##   ##    ###       ##       ##     ###      ##      ##    #\n");
+    printf("*        #####   ##            ##    #####      ########    ##      ##        ######      *\n");
+    printf("#                                                                                         #\n");
+    printf("*                                                                                         *\n");
+    printf("#                                                                                         #\n");
+    printf("#  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #\033[0m\n\n\n");
     printf("Which game do you want to play?\n");
     printf("---------------------------\n");
     printf("a. Slots\n");
