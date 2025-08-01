@@ -11,8 +11,7 @@
 #include "IOController.h"
 
 #define SYMBOL_COUNT 5
-#define SPIN_STEPS 30
-#define DELAY_MS 80
+#define INITIAL_BET 10
 
 // 2D array of symbols for the slot machine (array of strings, since we are using UTF-8 symbols)
 const char* Symbols[] = { "💎", "💲", "🍀", "🪙", "🍒" };
@@ -27,6 +26,7 @@ double GetMultiplier(const char* Symbol) {
     return 0;
 }
 
+// Returns the winnings based on the symbols and the bet
 double CalculateWinnings(const char* S1, const char* S2, const char* S3, int Bet) {
     // Winnings if all 3 symbols match
     if (strcmp(S1, S2) == 0 && strcmp(S2, S3) == 0) {
@@ -48,8 +48,9 @@ double CalculateWinnings(const char* S1, const char* S2, const char* S3, int Bet
     return 0;
 }
 
+// Handles the user interface and pathing
 USER SlotsGame(USER User) {
-    int bet = 10;
+    int bet = INITIAL_BET;
     while (1) {
         PrintSlotsMenu(User, bet);
         char userInput = GetUserInput("abq");
@@ -94,6 +95,7 @@ USER SlotsGame(USER User) {
     }
 }
 
+// Slots menu display
 void PrintSlotsMenu(USER User, int Bet) {
     printf("---------------------------\n");
     printf("Current Balance: %lf\n", User.balance);
