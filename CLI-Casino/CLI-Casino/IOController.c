@@ -63,8 +63,8 @@ char GetUserInput(char* ValidChars) {
     while (!valid) {
         printf("Please enter your selection (%s): ", ValidChars);
         selected = fgetc(stdin);
-        // Consume any extra input until newline
-        while (getchar() != '\n');
+        
+        ClearInputBuffer();
 
         // Check if selected is in validChars
         for (int i = 0; ValidChars[i] != '\0'; i++) {
