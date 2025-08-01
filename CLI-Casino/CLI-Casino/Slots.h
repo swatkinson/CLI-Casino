@@ -8,14 +8,32 @@
 
 #include "User.h"
 
-/// Return symbol value multiplier
+// ----------- HELPER FUNCTIONS ----------
+
+/// Returns payout multiplier for a given symbol
 double GetMultiplier(const char* Symbol);
 
-/// Calculate the amount won based on symbols and bet amount
+/// Returns the winnings based on the symbols and the bet
 double CalculateWinnings(const char* S1, const char* S2, const char* s3, int Bet);
 
-/// Main run loop for the slot machine game
+/// Gets a random symbol from the symbols array, weighted
+char* GetRandomSymbol();
+
+// ---------- SLOTS LOGIC FUNCTIONS ----------
+
+/// Runs the slot machine, returns the winnings based on the bet input
+double RunSlots(int Bet);
+
+// ---------- USER INTERFACE ----------
+
+/// Looping slots menu - Handles the user interface and pathing
 USER SlotsGame(USER User);
 
-/// Prints options UI
+/// Slots menu display
 void PrintSlotsMenu(USER User, int Bet);
+
+/// Runs the slot machine spinning animation
+void SlotMachineAnimation(const char* S1, const char* S2, const char* S3);
+
+/// Draws the static slot machine with the 3 symbols passed
+void PrintSlotMachine(const char* S1, const char* S2, const char* S3);
