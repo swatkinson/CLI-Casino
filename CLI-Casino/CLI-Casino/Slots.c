@@ -58,6 +58,12 @@ USER SlotsGame(USER User) {
         case 'a':
             // Run slots
             WipeScreen();
+
+			if (User.balance < bet) {
+				printf("You do not have enough balance to place this bet. Please lower your bet.\n");
+				continue; // Go back to the menu
+			}
+
             printf("[DEBUG] Slots run\n");
             break;
         case 'b':
