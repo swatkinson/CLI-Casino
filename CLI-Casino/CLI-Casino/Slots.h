@@ -13,3 +13,9 @@ double GetMultiplier(const char* Symbol);
 
 /// Calculate the amount won based on symbols and bet amount
 double CalculateWinnings(const char* S1, const char* S2, const char* s3, int Bet);
+
+/// Main run loop for the slot machine game
+USER SlotsGame(USER User);
+
+/// Prints options UI
+void PrintSlotsMenu(USER User, int Bet);

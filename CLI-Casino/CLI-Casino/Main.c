@@ -24,7 +24,7 @@ int main(void) {
 	user.balance = 1000; // Starting balance
 
 	// Start the main menu loop
-	mainMenu(user);
+	MainMenu(user);
 
 	// Save user to file 
 
