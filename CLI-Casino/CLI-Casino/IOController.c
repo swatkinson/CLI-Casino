@@ -5,41 +5,47 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "Slots.h"
 
-void mainMenu(USER User) {
+void MainMenu(USER User) {
     while (1)
     {
         // Display menu
-        displayMainMenuOptions();
+        WipeScreen();
+        DisplayMainMenuOptions();
 
         // Ask for input
-        char userInput = getUserInput("abcq");
+        char userInput = GetUserInput("abcq");
 
         // Switch case select
         switch (userInput) {
         case 'a':
-            printf("\n[DEBUG] Slots selected\n\n");
-            // SlotsGame(User);
+			WipeScreen();
+            SlotsGame(User);
             break;
         case 'b':
+            WipeScreen();
             printf("\n[DEBUG] Poker selected\n\n");
             // PokerGame(User);
             break;
         case 'c':
+            WipeScreen();
             printf("\n[DEBUG] Blackjack selected\n\n");
             // BlackjackGame(User);
             break;
         case 'q':
-            printf("\nExiting the game. Thank you for playing!\n");
+            WipeScreen();
+            printf("\nExiting the game. Thank you for playing!\n\n");
             return;
         default:
+            WipeScreen();
             printf("\nInvalid selection. Please try again.\n\n");
             break;
         }
     }
 }
 
-void displayMainMenuOptions() {
+void DisplayMainMenuOptions() {
     printf("Which game do you want to play?\n");
     printf("---------------------------\n");
     printf("a. Slots\n");
@@ -50,19 +56,19 @@ void displayMainMenuOptions() {
 }
 
 /// Asks users to input char selection, if character is not in validChars, tell user and ask again
-char getUserInput(char* validChars) {
+char GetUserInput(char* ValidChars) {
     char selected;
     bool valid = false;
 
     while (!valid) {
-        printf("Please enter your selection (%s): ", validChars);
+        printf("Please enter your selection (%s): ", ValidChars);
         selected = fgetc(stdin);
         // Consume any extra input until newline
         while (getchar() != '\n');
 
         // Check if selected is in validChars
-        for (int i = 0; validChars[i] != '\0'; i++) {
-            if (selected == validChars[i]) {
+        for (int i = 0; ValidChars[i] != '\0'; i++) {
+            if (selected == ValidChars[i]) {
                 valid = true;
                 break;
             }
@@ -72,4 +78,15 @@ char getUserInput(char* validChars) {
         }
     }
     return selected;
+}
+
+void WipeScreen() {
+    for (int i = 0; i < 40; i++) {
+        printf("\n");
+    }
+}
+
+void ClearInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
