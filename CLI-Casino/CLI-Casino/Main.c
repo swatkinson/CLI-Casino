@@ -8,7 +8,7 @@
 
 int main(void) {
 	
-	srand(time(NULL));		     // Seed the random number generator
+	srand((unsigned int)time(NULL)); // Seed the random number generator
 	SetConsoleOutputCP(CP_UTF8); //Allow UTF8 Console output
 
 	// Check & run command line args (will exit if there are args, doesnt run main logic)
@@ -19,9 +19,7 @@ int main(void) {
 	// If user wants to make a new user, prompt for username and give default balance
 
 	// [DEBUG] INITIALIZE TESTING USER BEFORE LOGIN IS COMPLETE
-	USER user;
-	user.username = "Player1";
-	user.balance = 1000; // Starting balance
+	USER user = { "Player1", 1000 }; // Starting balance
 
 	// Start the main menu loop
 	MainMenu(user);
