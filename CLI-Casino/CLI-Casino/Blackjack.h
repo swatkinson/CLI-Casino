@@ -7,19 +7,22 @@
 
 
 typedef enum cursorLocation {
-	Dealer=3,
-	Player=20,
-	End=37
+	Dealer = 3,
+	Player = 20,
+	Status =37,
+	End=38
 }CURLOC;
 
 void runBJ(USER u);
 
 int getBet(USER* u);
 
-void deal(FULLDECK* fd, CARD* phand[], CARD* dhand[]);
+void deal(FULLDECK* fd, CARD phand[], CARD dhand[]);
 
-void playerTurn(FULLDECK* fd, CARD hand[], int len);
+int playerTurn(FULLDECK* fd, CARD hand[], int len);
 
 int scoreHand(CARD hand[], int len);
 
-void dealerTurn(FULLDECK* fd, CARD hand[], int len);
+int dealerTurn(FULLDECK* fd, CARD hand[], int len);
+
+void payout(USER* u, int bet, CARD phand[], int phandlen, CARD dhand[], int dhandlen);

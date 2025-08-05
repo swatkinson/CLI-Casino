@@ -11,8 +11,12 @@
 #define ROYAL_VAL 10//for tens and aces too
 
 void moveCursor(CURLOC loc) {
-	char forbot[] = { "\033[J" };
-	printf("\033[%d;0H%s", loc, (loc == End) ? forbot : "");
+	printf("\033[%d;0H",loc);
+	if (loc == End)
+		printf("\033[J");
+	if (loc == Status)
+		printf("\033[K");
+
 }
 
 void printBJmenu() {
@@ -29,6 +33,7 @@ void runBJ(USER u) {
 	CARD phand[HAND_MAX];
 	CARD dhand[HAND_MAX];
 
+
 	bool running=true;
 	while (running) {
 		printBJmenu();
@@ -37,9 +42,9 @@ void runBJ(USER u) {
 		case 'a':
 			bet = getBet(&u);
 			deal(&fd, phand, dhand);
-			playerTurn(&fd,phand,STARTING_HSIZE);
-			dealerTurn(&fd, dhand, STARTING_HSIZE);
-			input = GetUserInput("q");
+			int finalphand=playerTurn(&fd,phand,STARTING_HSIZE);
+			int finaldhand=dealerTurn(&fd, dhand, STARTING_HSIZE);
+			payout(&u, bet, phand, finalphand, dhand, finaldhand);
 			break;
 		case 'q':
 			running = false;
@@ -49,6 +54,37 @@ void runBJ(USER u) {
 	return;
 }
 
+void payout(USER* u, int bet, CARD phand[],int phandlen, CARD dhand[], int dhandlen) {
+	int playerScore = scoreHand(phand, phandlen);
+	int dealerScore = scoreHand(dhand, dhandlen);
+	int winnings;
+
+	if (playerScore > BLACKJACK) {
+		winnings = 0;
+	}
+	else if (playerScore == dealerScore) {
+
+		winnings = bet;
+	}
+	else if (playerScore == BLACKJACK && phandlen == STARTING_HSIZE) {
+
+		winnings = bet * 2.5;
+	}
+	else if (BLACKJACK - playerScore < BLACKJACK - dealerScore || dealerScore>BLACKJACK) {
+
+		winnings = bet * 2;
+	}
+	else {
+
+		winnings = 0;
+	}
+
+
+	moveCursor(Status);
+	printf("Won %d \na. payout\n", winnings);
+	u += winnings;
+	int in = GetUserInput("a");
+}
 
 int getBet(USER* u) {
 	int bet;
@@ -96,20 +132,20 @@ void deal(FULLDECK* fd, CARD phand[], CARD dhand[]) {
 		displayHand(dhand, STARTING_HSIZE);
 		moveCursor(End);
 	}
+	else if (getValue(dhand[0]) >= ROYAL_VAL) {
+		moveCursor(Status);
+		printf("dealer does not have blackjack\n");
+		moveCursor(End);
+	}
 	dhand[1] = dealersecret;
 	return;
 }
 
-
-void playerTurn(FULLDECK* fd,CARD hand[], int len) {
-	moveCursor(Player);
-	displayHand(hand, len);
-	moveCursor(End);
+void availableMoves(CARD hand[], int len, char options[]) {
 	bool canhit = false;
 	bool canstand = true;//always true
 	bool cansplit = false;
 	bool canddown = false;
-	char options[5];
 	int n = 0;
 
 	if (scoreHand(hand, len) < BLACKJACK) {
@@ -141,29 +177,48 @@ void playerTurn(FULLDECK* fd,CARD hand[], int len) {
 		printf("d. double down");
 	printf("\n");
 
+	return options;
+}
+
+int playerTurn(FULLDECK* fd,CARD hand[], int len) {
+	moveCursor(Player);
+	displayHand(hand, len);
+	moveCursor(End);
+
+	if (scoreHand(hand, len) == BLACKJACK && len==STARTING_HSIZE) {
+		moveCursor(Status);
+		printf("BlackJack!\n");
+		return len;
+	}
+	else if (scoreHand(hand, len) > BLACKJACK) {
+		moveCursor(Status);
+		printf("Busted...\n");
+		return len;
+	}
+
+
+	char options[5];
+	availableMoves(hand, len, options);
 	int input = GetUserInput(options);
 	switch (input) {
 	case 'a':
 		hand[len] = drawCard(fd);
-		playerTurn(fd, hand, len + 1);
+		len=playerTurn(fd, hand, len + 1);
 		break;
 	case 'b':
 		break;
 	case 'c':
 		printf("subtracting equal bet\n");
-		CARD newhand[HAND_MAX] = { hand[1],drawCard(fd) };
-		hand[1] = drawCard(fd);
-		playerTurn(fd, hand, 2);
-		playerTurn(fd, newhand,2);
+
 		break;
 	case 'd':
 		printf("doubling");
 		break;
 	}
-	return;
+	return len;
 }
 
-void dealerTurn(FULLDECK* fd,CARD hand[], int len) {
+int dealerTurn(FULLDECK* fd,CARD hand[], int len) {
 	Sleep(500);
 	moveCursor(Dealer);
 	displayHand(hand, len);
@@ -177,6 +232,7 @@ void dealerTurn(FULLDECK* fd,CARD hand[], int len) {
 		displayHand(hand, len);
 		moveCursor(End);
 	}
+	return len;
 }
 
 int scoreHand(CARD hand[], int len) {
