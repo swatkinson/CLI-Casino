@@ -1,4 +1,4 @@
-//sebastian solorzano - cscn71030 s25 - project (casino)
+﻿//sebastian solorzano - cscn71030 s25 - project (casino)
 //imp for all card functions. card struct, setting up deck, drawing,
 // discard, painting, etc.
 

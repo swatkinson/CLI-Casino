@@ -1,4 +1,4 @@
-// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
+﻿// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
 // Implementation of IOController module
 
 #include "IOController.h"
@@ -46,25 +46,6 @@ void MainMenu(USER User) {
 }
 
 void DisplayMainMenuOptions() {
-    //art by sebastian
-    printf("\033[6m\033[93m#  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #\n");
-    printf("*                                                                                         *\n");
-    printf("#                                                                                         #\n");
-    printf("*                                                                                         *\n");
-    printf("#                                                                                         #\n");
-    printf("*       ######          ##           #####      ########    ##      ##        ######      *\n");
-    printf("#     ###              ####        ##     ##       ##       ###     ##      ##      ##    #\n");
-    printf("*   ##                 #  #       #                ##       ####    ##     ##        ##   *\n");
-    printf("#   ##                #    #       ##              ##       ## ##   ##    ##          ##  #\n");
-    printf("*   ##               ########        #####         ##       ##  ##  ##    #            #  *\n");
-    printf("#   ##              #        #           ###       ##       ##   ## ##    ##          ##  #\n");
-    printf("*   ##             ##        ##            ##      ##       ##    ####     ##        ##   *\n");
-    printf("#     ###         ##          ##   ##    ###       ##       ##     ###      ##      ##    #\n");
-    printf("*        #####   ##            ##    #####      ########    ##      ##        ######      *\n");
-    printf("#                                                                                         #\n");
-    printf("*                                                                                         *\n");
-    printf("#                                                                                         #\n");
-    printf("#  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #  *  #\033[0m\n\n\n");
     printf("Which game do you want to play?\n");
     printf("---------------------------\n");
     printf("a. Slots\n");
@@ -103,6 +84,9 @@ void WipeScreen() {
     for (int i = 0; i < 40; i++) {
         printf("\n");
     }
+    system("cls");
+    printf("\033[91m 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 \n \033[0m");
+    printf("\033[90m======================================================================================================================= \n\033[0m");
 }
 
 void ClearInputBuffer() {
