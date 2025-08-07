@@ -125,8 +125,6 @@ void playRound(USER* u, FULLDECK* fd, int bet) {
 
 		dealerTurn(fd, &dealer);
 	}
-	else
-		tension(1000);//dramatic tension
 
 	if (player.hasSplit)
 		payout(u, &splitp, &dealer); //runs split hand first
@@ -151,7 +149,7 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 	moveCursor(DEALER_LOC);
 	displayHand(d->hand, d->handsize);
 	tension(400);
-	moveCursor(DEALER_LOC);
+	moveCursor(PLAYER_LOC);
 	displayHand(p->hand, p->handsize);
 
 	//now that we're done printing we can just add dealer's second card to hand, screen won't be updated until dealerturn anyway
