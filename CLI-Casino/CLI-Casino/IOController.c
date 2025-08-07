@@ -1,4 +1,4 @@
-﻿// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
+// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
 // Implementation of IOController module
 
 #include "IOController.h"
@@ -62,7 +62,7 @@ char GetUserInput(char* ValidChars) {
 	while (!valid) {
 		printf("Please enter your selection (%s): ", ValidChars);
 		selected = fgetc(stdin);
-
+		
 		ClearInputBuffer();
 
 		// Check if selected is in validChars
