@@ -21,3 +21,5 @@ char GetUserInput(char* ValidChars);
 void WipeScreen();
 
 void ClearInputBuffer();
+
+void DisplayWindowBoundary(int width, int height);

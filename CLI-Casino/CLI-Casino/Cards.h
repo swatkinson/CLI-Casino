@@ -1,4 +1,4 @@
-//sebastian solorzano - cscn71030 s25 - project (casino)
+// CLI Casino | Sebastian Solorzano | CSCN71030 
 //interface for all card functions. card struct, setting up deck, drawing,
 // discard, painting, etc.
 
