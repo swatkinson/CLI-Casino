@@ -15,24 +15,28 @@
 typedef enum { ALL_TEST, SLOT_TEST, POKER_TEST, BLACKJACK_TEST, NO_TEST } TEST_TYPE;
 
 #define DEFAULT_USERNAME "TestUser"
+#define DEFAULT_BALANCE 1000
 
 #define SLOTS_TEST_FILE "Slots_IntegrationTest.txt"
 #define SLOTS_EXPECTED_BAL 76
 
 #define POKER_TEST_FILE "Poker_IntegrationTest.txt"
-#define POKER_EXPECTED_BAL -1
+#define POKER_EXPECTED_BAL -1 // NOT YET IMPLEMENTED
 
 #define BLACKJACK_TEST_FILE "Blackjack_IntegrationTest.txt"
-#define BLACKJACK_EXPECTED_BAL -1
+#define BLACKJACK_EXPECTED_BAL -1 // NOT YET IMPLEMENTED
 
-#define TENSION 500
+#define TENSION 500 // Time delay for dramatic effect
 
 void IntegrationTestRunner(TEST_TYPE TestType);
 
 void IntegrationTest(char* TestFile, int ExpectedBalance);
 
-bool RouteStdin(const char* TestFile);
+/// Redirects stdin to the given file, returns false if file couldnt be opened
+bool RouteStdin(const char* TestFile);	
 
+/// Silences stdout (for running tests without console spam)
 void SilenceStdout(FILE* originalStdout);
 
+/// Restores stdout to the console, so we can print test results
 void RestoreStdout(FILE* originalStdout);

@@ -17,7 +17,6 @@ void IntegrationTestRunner(TEST_TYPE TestType) {
 	switch (TestType) {
 
 	case ALL_TEST:
-		
 		IntegrationTest(SLOTS_TEST_FILE, SLOTS_EXPECTED_BAL);
 		IntegrationTest(POKER_TEST_FILE, POKER_EXPECTED_BAL);
 		IntegrationTest(BLACKJACK_TEST_FILE, BLACKJACK_EXPECTED_BAL);
@@ -34,7 +33,6 @@ void IntegrationTestRunner(TEST_TYPE TestType) {
 	case BLACKJACK_TEST:
 		IntegrationTest(BLACKJACK_TEST_FILE, BLACKJACK_EXPECTED_BAL);
 		break;
-
 	}
 
 	exit(EXIT_SUCCESS); // Exit after running the tests
@@ -45,10 +43,9 @@ void IntegrationTest(char* TestFile, int ExpectedBalance) {
 	printf("%-30s- ", TestFile);
 	Sleep(TENSION); // This is for you, Sebastian
 
-	PUSER testUser = CreateUser(DEFAULT_USERNAME, 1000);
+	PUSER testUser = CreateUser(DEFAULT_USERNAME, DEFAULT_BALANCE);
 
-	if (RouteStdin(TestFile) == false)
-		return; // Dont run tests if integration test file didnt open
+	if ( RouteStdin(TestFile) == false) return; // Dont run tests if integration test file didnt open
 
 	// Silence stdout
 	FILE* originalStdout = NULL;
@@ -60,6 +57,7 @@ void IntegrationTest(char* TestFile, int ExpectedBalance) {
 	// Restore stdout to console
 	RestoreStdout(originalStdout);
 
+	//   v Truncates balance to int for comparison
 	if ((int)testUser->balance == ExpectedBalance) {
 		printf("✅ Passed - User balance is as expected.\n");
 	}
@@ -67,7 +65,7 @@ void IntegrationTest(char* TestFile, int ExpectedBalance) {
 		printf("❌ Failed - Expected balance %d, but got %d.\n", ExpectedBalance, (int)testUser->balance);
 	}
 
-	DeleteUser(testUser);
+	DeleteUser(testUser); // Free mem
 }
 
 
