@@ -1,4 +1,4 @@
-//sebastian solorzano - cscn71030 s25 - project (casino)
+// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
 //interface for blackjack
 #pragma once
 #include "IOController.h"
@@ -9,6 +9,13 @@
 #define BLACKJACK 21
 #define STARTING_HSIZE 2
 
+#define DEALER_LOC 3
+#define MENU_LOC 20
+#define BETTING_LOC 23
+#define STATUS_LOC 25
+#define OPTION_LOC 27
+#define PLAYER_LOC 29
+#define END_LOC 46
 
 //player's possible statuses across the game
 typedef enum playerStatus {
@@ -32,17 +39,6 @@ typedef struct bjplayer {
 }BJPLAYER;
 
 
-//this could be used in other card games if they follow the same visual style. move to iocontroller or cards?
-typedef enum cursorLocation {
-	//numbers=line numbers to move the cursor to
-	Dealer = 3,
-	Menu = 20,
-	Betting = 23,
-	Status = 25,
-	Option = 27,
-	Player = 29,
-	End=46
-}CURLOC;
 
 
 //(BJ) initializes a player for blackjack
@@ -65,7 +61,7 @@ void playRound(USER* u, FULLDECK* fd, int bet);
 void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d);
 
 //(BJ) runs the player's turn
-void playerTurn(USER* u, FULLDECK* fd, BJPLAYER* p, BJPLAYER* splip);
+void playerTurn(USER* u, FULLDECK* fd, BJPLAYER* p, BJPLAYER* splitp);
 //(BJ) checks which moves are available to the player
 void availableMoves(BJPLAYER* p, char options[]);
 
@@ -89,7 +85,7 @@ int scoreHand(CARD hand[], int len, STAT* s);
 
 
 //(BJ) moves cursor to a specific location
-void moveCursor(CURLOC loc);
+void moveCursor(int loc);
 //locations specifically designed with blackjack in mind. might work for other card games???
 //assuming they follow the same visual style. if so move this to cards or iocontroller?
 
