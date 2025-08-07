@@ -19,12 +19,15 @@ int main(void) {
 	// If user wants to make a new user, prompt for username and give default balance
 
 	// [DEBUG] INITIALIZE TESTING USER BEFORE LOGIN IS COMPLETE
-	USER user = { "Player1", 1000 }; // Starting balance
+	PUSER user = CreateUser("User1", 1000); // Starting balance
 
 	// Start the main menu loop
 	MainMenu(user);
 
 	// Save user to file 
+
+	// Free user memory
+	DeleteUser(user);
 
 	return 0;
 }

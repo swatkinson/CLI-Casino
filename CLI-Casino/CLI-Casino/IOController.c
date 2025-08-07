@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "Slots.h"
 
-void MainMenu(USER User) {
+void MainMenu(PUSER User) {
 	while (1)
 	{
 		// Display menu
