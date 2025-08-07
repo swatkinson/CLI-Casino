@@ -17,6 +17,9 @@
 #define PLAYER_LOC 29
 #define END_LOC 46
 
+extern bool IntegrationTestFlag;
+
+
 //player's possible statuses across the game
 typedef enum playerStatus {
 	Firsthand,
@@ -100,6 +103,8 @@ void printOptions(char opt1[], char opt2[], char opt3[], char opt4[]);
 
 //(BJ) prints bet and balance onto the bj menu
 void printBet(int be, int ba);
+
+void tension(int ttimems);
 
 
 
