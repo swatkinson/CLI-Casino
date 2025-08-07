@@ -1,11 +1,15 @@
 // CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
 // Implementation of IOController module
 
+#define _CRT_SECURE_NO_WARNINGS
 #include "IOController.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "Slots.h"
+#include "Blackjack.h"
+#include "Poker.h"
 
 void MainMenu(PUSER User) {
 	while (1)
@@ -24,13 +28,11 @@ void MainMenu(PUSER User) {
 			break;
 		case 'b':
 			WipeScreen();
-			printf("\n[DEBUG] Poker selected\n\n");
 			// PokerGame(User);
 			break;
 		case 'c':
 			WipeScreen();
-			printf("\n[DEBUG] Blackjack selected\n\n");
-			// BlackjackGame(User);
+			runBJ(User);
 			break;
 		case 'q':
 			WipeScreen();
@@ -88,4 +90,39 @@ void WipeScreen() {
 void ClearInputBuffer() {
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF);
+}
+
+// Draws a window border and prompts user to resize if needed
+void DisplayWindowBoundary(int width, int height) {
+	WipeScreen();
+
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			if (i == 0 && j == 0)
+				printf("┌");
+			else if (i == 0 && j == width - 1)
+				printf("┐");
+			else if (i == height - 1 && j == 0)
+				printf("└");
+			else if (i == height - 1 && j == width - 1)
+				printf("┘");
+			else if (i == 0 || i == height - 1)
+				printf("─");
+			else if (j == 0 || j == width - 1)
+				printf("│");
+			else
+				printf(" ");
+		}
+		printf("\n");
+	}
+
+	// Centered message
+	const char* centerMessage = "Please enlarge your terminal or zoom out until you see all borders. Press any key to continue.";
+	int messageRow = height / 2 - 10;
+	int messageCol = (width - (int)strlen(centerMessage)) / 2;
+
+	// Move cursor to the center
+	printf("\033[%d;%dH%s", messageRow, messageCol, centerMessage); 
+
+	fgetc(stdin); // Pause to let user view message
 }

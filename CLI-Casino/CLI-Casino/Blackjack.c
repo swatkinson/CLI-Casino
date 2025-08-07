@@ -58,6 +58,8 @@ void runBJ(USER* u) {//change to *u once we integrate
 	int bet;
 	FULLDECK fd = initDeck();
 
+	DisplayWindowBoundary(120, 47);
+
 	bool running = true;
 	while (running) {
 
@@ -424,7 +426,6 @@ void moveCursor(CURLOC loc) {
 void printBJmenu() {
 	WipeScreen();
 	moveCursor(Menu);
-	//printf("welcome to blackjack\na. play game\nq. quit to menu\n");
 	printf("                                     ┌──────────────────────────────────────────────────────────────────────────┐\n");
 	printf("                                     │                           Welcome To Blackjack                           │\n");
 	printf("                                     │ ~blackjack pays 3:2~       ~table minimum 2~   ~dealer stands on all 17~ │\n");
@@ -435,7 +436,6 @@ void printBJmenu() {
 	printf("                                     │                  │                  │                  │                 │\n");
 	printf("                                     └──────────────────┴──────────────────┴──────────────────┴─────────────────┘\n");
 
-	printStatus("please play the game in full screen mode");
 	printOptions("a. play round", "q. quit", "", "");
 }
 
