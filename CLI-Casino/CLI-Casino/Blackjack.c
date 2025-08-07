@@ -58,7 +58,7 @@ void runBJ(USER* u) {//change to *u once we integrate
 	int bet;
 	FULLDECK fd = initDeck();
 
-	DisplayWindowBoundary(120, 47);
+	DisplayWindowBoundary(120, End);
 
 	bool running = true;
 	while (running) {
