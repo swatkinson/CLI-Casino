@@ -1,4 +1,4 @@
-// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
+﻿// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
 // Main run for the CLI Casino game
 
 #include "IOController.h"
