@@ -8,26 +8,20 @@
 #include "IntegrationTest.h"
 #include <stdbool.h>
 
-bool IntegrationTestFlag = false;
-
 int main(void) {
+	srand((unsigned int)time(NULL)); // Seed the random number generator
 	SetConsoleOutputCP(CP_UTF8); //Allow UTF8 Console output
-	
-	// Run integration tests
-	IntegrationTestRunner('a');
+	WipeScreen(); // Clear the console screen
 
 	// Check & run command line args (will exit if there are args, doesnt run main logic)
 
-	// Load users from file
+	// Run integration tests
+	IntegrationTestRunner( ALL_TEST ); // Switch this to the correct TEST_TYPE to run tests, will be changed to command line args in that branch.
 
-	// Ask user to select a user
-	// If user wants to make a new user, prompt for username and give default balance
+	// User Selection
 
 	// [DEBUG] INITIALIZE TESTING USER BEFORE LOGIN IS COMPLETE
 	PUSER user = CreateUser("User1", 1000); // Starting balance
-
-	//srand((unsigned int)time(NULL)); // Seed the random number generator
-	srand(1234567890);
 
 	// Start the main menu loop
 	MainMenu(user);

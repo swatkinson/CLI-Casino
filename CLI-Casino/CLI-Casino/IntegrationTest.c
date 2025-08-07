@@ -3,29 +3,36 @@
 
 #include "IntegrationTest.h"
 
-extern bool IntegrationTestFlag;
+bool IntegrationTestFlag = false;
 
-void IntegrationTestRunner(char SelectedTest) {
-
-	if (SelectedTest == '\0') {
+void IntegrationTestRunner(TEST_TYPE TestType) {
+	if (TestType == NO_TEST) {
 		return;
 	}
 
-	IntegrationTestFlag = true;
-	srand(1234567890); // Set the seed of the randomizer so that we get the expected results
+	printf("Running Integration Tests:\n");
+	IntegrationTestFlag = true; // Makes games run at instant speed
+	srand(1234567890);			// Set the seed of the randomizer so that we get the expected results
 
-	switch (SelectedTest) {
+	switch (TestType) {
 
-	case 'a': // All Integration Tests
-		printf("Running All Integration Tests...\n");
-		SlotsIntegrationTest();
-
-		fgetc(stdin); // Wait for user input to see results
+	case ALL_TEST:
+		
+		IntegrationTest(SLOTS_TEST_FILE, SLOTS_EXPECTED_BAL);
+		IntegrationTest(POKER_TEST_FILE, POKER_EXPECTED_BAL);
+		IntegrationTest(BLACKJACK_TEST_FILE, BLACKJACK_EXPECTED_BAL);
 		break;
 
-	case 's': // Slots Integration Test
-		printf("Running Slots Integration Test...\n");
-		SlotsIntegrationTest(SLOTS_TEST_FILE);
+	case SLOT_TEST:
+		IntegrationTest(SLOTS_TEST_FILE, SLOTS_EXPECTED_BAL);
+		break;
+
+	case POKER_TEST:
+		IntegrationTest(POKER_TEST_FILE, POKER_EXPECTED_BAL);
+		break;
+
+	case BLACKJACK_TEST:
+		IntegrationTest(BLACKJACK_TEST_FILE, BLACKJACK_EXPECTED_BAL);
 		break;
 
 	}
@@ -33,26 +40,60 @@ void IntegrationTestRunner(char SelectedTest) {
 	exit(EXIT_SUCCESS); // Exit after running the tests
 }
 
-void SlotsIntegrationTest() {
-	PUSER testUser = CreateUser(DEFAULT_USERNAME, 1000);
-	double expectedBalance = 76; // Expected balance after the test
+void IntegrationTest(char* TestFile, int ExpectedBalance) {
+	Sleep(TENSION);
+	printf("%-30s- ", TestFile);
+	Sleep(TENSION); // This is for you, Sebastian
 
-	RouteStdin(SLOTS_TEST_FILE);
+	PUSER testUser = CreateUser(DEFAULT_USERNAME, 1000);
+
+	if (RouteStdin(TestFile) == false)
+		return; // Dont run tests if integration test file didnt open
+
+	// Silence stdout
+	FILE* originalStdout = NULL;
+	SilenceStdout(originalStdout);
 
 	// Run the program, running the inputs from the test file
 	MainMenu(testUser);
 
-	if ((int)testUser->balance == expectedBalance) {
-		printf("✅ Slots Integration Test Passed: User balance is as expected.\n");
+	// Restore stdout to console
+	RestoreStdout(originalStdout);
+
+	if ((int)testUser->balance == ExpectedBalance) {
+		printf("✅ Passed - User balance is as expected.\n");
 	}
 	else {
-		printf("❌ Slots Integration Test Failed: Expected balance %lf, but got %lf.\n", expectedBalance, testUser->balance);
+		printf("❌ Failed - Expected balance %d, but got %d.\n", ExpectedBalance, (int)testUser->balance);
 	}
 
-	DeleteUser(testUser); // Free user mem
+	DeleteUser(testUser);
 }
 
 
-void RouteStdin(const char* TestFile) {
-	freopen(TestFile, "r", stdin); // Redirects stdin to read from the specified test file
+bool RouteStdin(const char* TestFile) {
+	FILE* file = freopen(TestFile, "r", stdin); // Redirects stdin to read from the specified test file
+	if (file == NULL) {
+		fprintf(stderr, "❗ Error  - Could not open test file, is it not implemented yet? \n");
+		return false;
+	}
+	return true;
+}
+
+void SilenceStdout(FILE* OriginalStdout) {
+	OriginalStdout = stdout; // Store pointer to original stdout
+
+	// Route Stdout to NUL (silences it)
+	if (freopen("NUL", "w", stdout) == NULL) {
+		fprintf(stderr, "❗ Error  - Could not redirect stdout to NUL\n");
+		exit(EXIT_FAILURE);
+	}
+
+}
+
+void RestoreStdout(FILE* OriginalStdout) {
+	if (freopen("CON", "w", stdout) == NULL) {
+		fprintf(stderr, "❗ Error  - Could not restore stdout to console\n");
+		exit(EXIT_FAILURE);
+	}
 }
