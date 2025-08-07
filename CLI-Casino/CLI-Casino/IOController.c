@@ -99,10 +99,10 @@ TEST_TYPE CheckCommandLineArgs(int Argc, char* Argv[]) {
 	if (strcmp(Argv[1], ALL_FLAG) == 0)			return ALL_TEST;
 	if (strcmp(Argv[1], SLOTS_FLAG) == 0)		return SLOT_TEST;
 	if (strcmp(Argv[1], POKER_FLAG) == 0)		return POKER_TEST;
-	if (strcmp(Argv[1], BLACKJACK_FLAG) == 0)	return POKER_TEST;
+	if (strcmp(Argv[1], BLACKJACK_FLAG) == 0)	return BLACKJACK_TEST;
 
 	// If no valid flag was given:
-	printf("Usage: .\%s <test flag>\n", EXE_NAME);
+	printf("Usage: .\\%s <test flag>\n", EXE_NAME);
 	printf(
 		"Valid test flags: \n"
 		"%-10s - All Integration Tests \n"
@@ -114,7 +114,6 @@ TEST_TYPE CheckCommandLineArgs(int Argc, char* Argv[]) {
 
 	exit(EXIT_FAILURE);
 
-}
 }
 
 // Draws a window border and prompts user to resize if needed
