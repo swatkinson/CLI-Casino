@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Slots.h"
-#include "Blackjack.h"
 
 void MainMenu(USER User) {
 	while (1)
@@ -30,7 +29,8 @@ void MainMenu(USER User) {
 			break;
 		case 'c':
 			WipeScreen();
-			runBJ(&User);
+			printf("\n[DEBUG] Blackjack selected\n\n");
+			// BlackjackGame(User);
 			break;
 		case 'q':
 			WipeScreen();
