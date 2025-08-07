@@ -38,7 +38,9 @@ int getBet(USER* u) {
 		moveCursor(END_LOC);
 		printf("input bet (minimum 2):");//no \n here because it messes up the lines
 
-		if (scanf("%d", &bet) || bet < MIN_BET) { //a for garbage inputs in scanf
+		int garb = scanf("%d", &bet);
+		ClearInputBuffer();//for annoying stuff
+		if (garb!=1|| bet < MIN_BET) { //a for garbage inputs in scanf
 			printStatus("please enter valid amount");
 
 		}
@@ -49,7 +51,6 @@ int getBet(USER* u) {
 			u->balance -= bet; //immediatly removes from balance
 			valid = true;
 		}
-		ClearInputBuffer();//for annoying stuff
 	}
 	return bet;
 }
@@ -459,8 +460,8 @@ void printBet(int be,int ba) {
 
 //instead of just sleeping raw
 void tension(int ttimems){
-	if (IntegrationTestFlag == true)
-		return;
-	else
+//	if (IntegrationTestFlag == true)
+//		return;
+//	else
 		Sleep(ttimems);
 }

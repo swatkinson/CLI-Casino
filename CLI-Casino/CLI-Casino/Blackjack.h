@@ -17,7 +17,7 @@
 #define PLAYER_LOC 29
 #define END_LOC 46
 
-extern bool IntegrationTestFlag;
+//extern bool IntegrationTestFlag;
 
 
 //player's possible statuses across the game
