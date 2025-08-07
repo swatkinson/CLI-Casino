@@ -10,6 +10,8 @@
 #define DEALER_STAND_VAL 17//based on real life rules, dealer must stand on 17 or higher
 #define BJ_PAYOUT 2.5 //blackjack pays out 3:2; since we already subtracted the bet amount we have to return that as well
 #define REG_PAYOUT 2 //regular win pays out 1:1; since we already subtracted the bet amount we have to return that as well
+#define DDOWN_LB 8
+#define DDOWN_UB 12
 
 
 BJPLAYER initplayer() {
@@ -77,6 +79,7 @@ void runBJ(USER* u) {//change to *u once we integrate
 			bet = getBet(u);
 			printBet(bet,u->balance);
 			printStatus("");//in case they still have a money status on
+
 			playRound(u, &fd, bet);
 
 			//not strictly necessary, but prevents card counting(kinda? it auto-reshuffles when empty so idk if it was possible to begin with)
@@ -103,6 +106,7 @@ void playRound(USER* u, FULLDECK* fd, int bet) {
 
 
 	//we recieved fd as a pointer already, so no *fds below
+	//same for u
 
 	deal(fd, &player, &dealer);
 
@@ -117,7 +121,7 @@ void playRound(USER* u, FULLDECK* fd, int bet) {
 		dealerTurn(fd, &dealer);
 	}
 	else
-		Sleep(800);//dramatic tension
+		Sleep(1000);//dramatic tension
 
 	if (player.hasSplit)
 		payout(u, &splitp, &dealer); //runs split hand first
@@ -148,7 +152,6 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 	//now that we're done printing we can just add dealer's second card to hand, screen won't be updated until dealerturn anyway
 	d->hand[1] = drawCard(fd);
 
-
 	//we don't actually really care about score at this point, but taking it just makes things simpler
 	//what we really want is status, since game ends early if anyone has bj
 	d->score = scoreHand(d->hand, d->handsize, &d->state);
@@ -171,6 +174,8 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 	}
 	//this is all the same as in real casinos, where dealers will check for blackjack if they might have it. game ends early if they do
 	//(this is a good thing since there's no way for you to win if they do anyway)
+	if (p->state == BJed)
+		printStatus("BlackJack!");
 	return;
 }
 
@@ -192,7 +197,7 @@ void playerTurn(USER* u, FULLDECK* fd, BJPLAYER* p, BJPLAYER* splip) {
 	}
 
 
-	char options[5];
+	char options[POSSIBLE_ACTIONS];
 	//checks what options are actually available to the player
 	availableMoves(p, options);
 	//allowed input based on those options
@@ -223,6 +228,7 @@ void playerTurn(USER* u, FULLDECK* fd, BJPLAYER* p, BJPLAYER* splip) {
 		splip->hand[1] = drawCard(fd);
 		splip->bet = p->bet; //split bet is same as starting bet
 		u->balance -= p->bet; //removing balance directly kind of feels off, but whatever
+		printBet(p->bet, u->balance);//split bet is the same so doesnt matter
 
 		//continuing to play first hand
 		p->hand[1] = drawCard(fd); //not incrementing because we're replacing the card we had
@@ -267,20 +273,23 @@ void availableMoves(BJPLAYER* p, char options[]) {
 		options[n] = 'a';
 		n++;
 	}
+	//can always stand
 	options[n] = 'b';
 	n++;
+	
+	//special moves (+blackjack) only allowed on first hand
 	if (p->hand[0].ran == p->hand[1].ran && p->state == Firsthand) {
 		cansplit = true;
 		options[n] = 'c';
 		n++;
 	}
-	if (p->score > 8 && p->score < 12 && p->state == Firsthand) {
+	if (p->score > DDOWN_LB && p->score < DDOWN_UB && p->state == Firsthand) {
 		canddown = true;
 		options[n] = 'd';
 		n++;
 	}
+	//getuserinput uses a string, so
 	options[n] = '\0';
-
 
 	printOptions((canhit) ? "a. hit" : "", "b. stand", (cansplit) ? "c. split" : "", (canddown) ? "d. double down" : "");
 
@@ -310,22 +319,19 @@ void dealerTurn(FULLDECK* fd, BJPLAYER* d) {
 
 
 void payout(USER* u, BJPLAYER* p, BJPLAYER* d) {
-	//just in case it not updated (such as for splits, or with hidden card on blackjack)
-	p->score = scoreHand(p->hand, p->handsize, &p->state);
-	d->score = scoreHand(d->hand, d->handsize, &d->state);
+	//just in case it not updated (such as for splits, blackjack, or double down)
 	moveCursor(Dealer);
 	displayHand(d->hand, d->handsize);
+
+	if (p->state == Ddowned)
+		Sleep(600);//tension
 	moveCursor(Player);
 	displayHand(p->hand, p->handsize);
+	Sleep(700);//super tension before scoring
 
-
-	//player's facedown card is revealed at the end
-	if (p->state == Ddowned) {
-		Sleep(500);//tension
-		moveCursor(Player);
-		displayHand(p->hand, p->handsize);
-		Sleep(500);//tension
-	}
+	//updating final scores
+	p->score = scoreHand(p->hand, p->handsize, &p->state);
+	d->score = scoreHand(d->hand, d->handsize, &d->state);
 
 
 	int winnings;
@@ -353,10 +359,7 @@ void payout(USER* u, BJPLAYER* p, BJPLAYER* d) {
 	//cant be bothered to write the thing spencer did to let printstatus accept format specifiers
 	moveCursor(Status);
 	printf("                                     │                            Won %-42d│",winnings);
-
-	printf("\033[1;0H%lf", u->balance);
 	u->balance += winnings;
-	printf("\033[2;0H%lf", u->balance);
 
 	//small thing to cashout, for fun and the fact that otherwise the screen would clear immediatly and you wouldn't see what happened
 	printOptions("a.payout","","","");
@@ -411,7 +414,7 @@ void moveCursor(CURLOC loc) {
 
 	if (loc == End || loc == Player)
 		printf("\033[J");//clears everything below 
-	if (loc == Status||loc == Option||Betting)
+	if (loc == Status||loc == Option||loc==Betting)
 		printf("\033[K"); //clears line
 
 }
@@ -432,23 +435,21 @@ void printBJmenu() {
 	printf("                                     │                  │                  │                  │                 │\n");
 	printf("                                     └──────────────────┴──────────────────┴──────────────────┴─────────────────┘\n");
 
+	printStatus("please play the game in full screen mode");
 	printOptions("a. play round", "q. quit", "", "");
 }
 
-
+//thoughtfully ignore the magic numbers in the following, they're just for spacing and to make things look pretty
 void printStatus(char message[]) {
-
 	moveCursor(Status);
 	printf("                                     │                     %-53s│\n",message);
 
 }
-
 void printOptions(char opt1[], char opt2[], char opt3[], char opt4[]) {
 	moveCursor(Option);
 	printf("                                     │  %-16s│  %-16s│  %-16s│ %-16s│\n", opt1, opt2, opt3, opt4);
 
 }
-
 void printBet(int be,int ba) {
 	moveCursor(Betting);
 	printf("                                     │                   your bet: %-8d|      balance: %-21d│\n",be,ba);
