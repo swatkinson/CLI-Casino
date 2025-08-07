@@ -3,6 +3,7 @@
 
 #include "IOController.h"
 #include "User.h"
+#include "FileIO.h"
 #include <Windows.h>
 #include <time.h>
 
@@ -19,13 +20,13 @@ int main(void) {
 	// If user wants to make a new user, prompt for username and give default balance
 
 	// [DEBUG] INITIALIZE TESTING USER BEFORE LOGIN IS COMPLETE
-	PUSER user = CreateUser("User1", 1000); // Starting balance
+	PUSER user = UserMenu();
 
 	// Start the main menu loop
 	MainMenu(user);
 
 	// Save user to file 
-
+	UpdateUser(user);
 	// Free user memory
 	DeleteUser(user);
 
