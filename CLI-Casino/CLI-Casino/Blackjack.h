@@ -36,9 +36,12 @@ typedef struct bjplayer {
 typedef enum cursorLocation {
 	//numbers=line numbers to move the cursor to
 	Dealer = 3,
-	Player = 21,
-	Status =20,
-	End=38
+	Player = 29,
+	Menu =20,
+	Status =25,
+	Option =27,
+	Betting =23,
+	End=46
 }CURLOC;
 
 
@@ -52,10 +55,10 @@ int getBet(USER* u);
 
 
 //main loop for blackjack
-void runBJ(USER u);
+void runBJ(USER* u);
 
 //(BJ) runs a single round/game of blackjack
-void playRound(USER u, FULLDECK* fd, int bet);
+void playRound(USER* u, FULLDECK* fd, int bet);
 
 
 //(BJ) starting deal for player and dealer
@@ -93,7 +96,11 @@ void moveCursor(CURLOC loc);
 //prints menu for blackjack
 void printBJmenu();
 
+void printStatus(char message[]);
 
+void printOptions(char opt1[], char opt2[], char opt3[], char opt4[]);
+
+void printBet(int be, int ba);
 
 
 

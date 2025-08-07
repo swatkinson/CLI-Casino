@@ -1,4 +1,4 @@
-//sebastian solorzano - cscn71030 s25 - project (casino)
+﻿//sebastian solorzano - cscn71030 s25 - project (casino)
 //imp for blackjack
 #define _CRT_SECURE_NO_WARNINGS
 #include "Blackjack.h"
@@ -29,19 +29,18 @@ int getBet(USER* u) {
 	bool valid = false;
 
 	while (!valid) {
-
+		moveCursor(End);
 		printf("input bet (minimum 2)");
 
 		int a = scanf("%d", &bet);
 		ClearInputBuffer();//for annoying stuff
 
 		if (a != 1 || bet < MIN_BET) { //a for garbage inputs in scanf
-			WipeScreen();
-			printf("please enter valid amount\n");
+			printStatus("please enter valid amount");
+
 		}
 		else if (bet > u->balance) {
-			WipeScreen();
-			printf("cannot place a bet higher than your balance\n");//not allowing debt, sadly
+			printStatus("cannot place a bet higher than your balance");
 		}
 		else {
 			u->balance -= bet; //immediatly removes from balance
@@ -53,7 +52,7 @@ int getBet(USER* u) {
 
 
 //runs the game's main loop
-void runBJ(USER u) {//change to *u once we integrate
+void runBJ(USER* u) {//change to *u once we integrate
 	int bet;
 	FULLDECK fd = initDeck();
 
@@ -63,18 +62,21 @@ void runBJ(USER u) {//change to *u once we integrate
 		printBJmenu();
 
 		//buy-in is done within the game, so the only options are play and quit
+		moveCursor(End);
 		char input = GetUserInput("aq");
 		switch (input) {
 		case 'a':
 
 			//otherwise inescapable within the getbet function
-			if (u.balance < MIN_BET) {
-				printf("insufficient balance\n");
+			if (u->balance < MIN_BET) {
+				printStatus("insufficient balance");
 				break;
 			}
 
 			//players aren't initialized yet, so we use an int to send the bet
-			bet = getBet(&u);
+			bet = getBet(u);
+			printBet(bet,u->balance);
+			printStatus("");//in case they still have a money status on
 			playRound(u, &fd, bet);
 
 			//not strictly necessary, but prevents card counting(kinda? it auto-reshuffles when empty so idk if it was possible to begin with)
@@ -90,7 +92,7 @@ void runBJ(USER u) {//change to *u once we integrate
 
 
 
-void playRound(USER u, FULLDECK* fd, int bet) {
+void playRound(USER* u, FULLDECK* fd, int bet) {
 	BJPLAYER player = initplayer();
 	player.bet = bet; //cant be done in init because of dealer
 	BJPLAYER dealer = initplayer();
@@ -106,11 +108,10 @@ void playRound(USER u, FULLDECK* fd, int bet) {
 
 	if (player.state != BJed && dealer.state != BJed) { //avoids continuing if anyone has a natty
 
-		playerTurn(&u, fd, &player, &splitp);
+		playerTurn(u, fd, &player, &splitp);
 		if (player.hasSplit) {
-			moveCursor(Status);
-			printf("playing split 2");
-			playerTurn(&u, fd, &splitp, &splitp);//no default values; so sad :(...
+			printStatus("playing split 2");
+			playerTurn(u, fd, &splitp, &splitp);//no default values; so sad :(...
 		}
 
 		dealerTurn(fd, &dealer);
@@ -119,9 +120,9 @@ void playRound(USER u, FULLDECK* fd, int bet) {
 		Sleep(800);//dramatic tension
 
 	if (player.hasSplit)
-		payout(&u, &splitp, &dealer); //runs split hand first
+		payout(u, &splitp, &dealer); //runs split hand first
 
-	payout(&u, &player, &dealer);
+	payout(u, &player, &dealer);
 
 	moveCursor(End);
 }
@@ -137,7 +138,6 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 
 	//displaying the cards, sleeps are to make it look good (insant full hands looks bad)
 	//sleep numbers are magic I guess but I really don't think they matter?
-	WipeScreen();
 	Sleep(100);
 	moveCursor(Dealer);
 	displayHand(d->hand, d->handsize);
@@ -165,8 +165,7 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 			moveCursor(End);
 		}
 		else {
-			moveCursor(Status);
-			printf("dealer does not have blackjack\n");//just so you know
+			printStatus("dealer does not have blackjack");
 			moveCursor(End);
 		}
 	}
@@ -188,8 +187,7 @@ void playerTurn(USER* u, FULLDECK* fd, BJPLAYER* p, BJPLAYER* splip) {
 
 	//end immediatly if they bust. also a basecase/exitcase
 	if (p->state == Busted) {
-		moveCursor(Status);
-		printf("Busted...\n");
+		printStatus("Busted...");
 		return;
 	}
 
@@ -198,6 +196,7 @@ void playerTurn(USER* u, FULLDECK* fd, BJPLAYER* p, BJPLAYER* splip) {
 	//checks what options are actually available to the player
 	availableMoves(p, options);
 	//allowed input based on those options
+	moveCursor(End);
 	int input = GetUserInput(options); 
 	switch (input) {
 	case 'a':
@@ -217,8 +216,7 @@ void playerTurn(USER* u, FULLDECK* fd, BJPLAYER* p, BJPLAYER* splip) {
 	case 'c':
 		
 		//if you dont say it can get confusing
-		moveCursor(Status);
-		printf("playing split 1");
+		printStatus("playing split 1");
 
 		//for split hand
 		splip->hand[0] = p->hand[1];
@@ -236,11 +234,11 @@ void playerTurn(USER* u, FULLDECK* fd, BJPLAYER* p, BJPLAYER* splip) {
 		break;
 	case 'd':
 
-		moveCursor(Status);
-		printf("doubled down");
+		printStatus("doubled down");
 		//as its name implies, bet is doubled
 		u->balance -= p->bet; //removing balance directly kind of feels off, but whatever
 		p->bet += p->bet;//this surprisingly works
+		printBet(p->bet,u->balance);
 
 		//visuals for facedown card
 		p->hand[p->handsize] = fd->facedown;
@@ -283,15 +281,8 @@ void availableMoves(BJPLAYER* p, char options[]) {
 	}
 	options[n] = '\0';
 
-	if (canhit)
-		printf("a. hit     ");
-	if (canstand)
-		printf("b.stand     ");
-	if (cansplit)
-		printf("c. split     ");
-	if (canddown)
-		printf("d. double down");
-	printf("\n");
+
+	printOptions((canhit) ? "a. hit" : "", "b. stand", (cansplit) ? "c. split" : "", (canddown) ? "d. double down" : "");
 
 	return options;
 }
@@ -330,6 +321,7 @@ void payout(USER* u, BJPLAYER* p, BJPLAYER* d) {
 
 	//player's facedown card is revealed at the end
 	if (p->state == Ddowned) {
+		Sleep(500);//tension
 		moveCursor(Player);
 		displayHand(p->hand, p->handsize);
 		Sleep(500);//tension
@@ -358,13 +350,17 @@ void payout(USER* u, BJPLAYER* p, BJPLAYER* d) {
 		winnings = 0;
 	}
 
+	//cant be bothered to write the thing spencer did to let printstatus accept format specifiers
 	moveCursor(Status);
-	printf("Won % d", winnings);
+	printf("                                     │                            Won %-42d│",winnings);
+
+	printf("\033[1;0H%lf", u->balance);
 	u->balance += winnings;
-	moveCursor(End);
+	printf("\033[2;0H%lf", u->balance);
 
 	//small thing to cashout, for fun and the fact that otherwise the screen would clear immediatly and you wouldn't see what happened
-	printf("a.payout\n");
+	printOptions("a.payout","","","");
+	moveCursor(End);
 	int in = GetUserInput("a");
 
 	return;
@@ -415,7 +411,7 @@ void moveCursor(CURLOC loc) {
 
 	if (loc == End || loc == Player)
 		printf("\033[J");//clears everything below 
-	if (loc == Status)
+	if (loc == Status||loc == Option||Betting)
 		printf("\033[K"); //clears line
 
 }
@@ -424,6 +420,37 @@ void moveCursor(CURLOC loc) {
 //prints game menu
 void printBJmenu() {
 	WipeScreen();
-	printf("welcome to blackjack\na. play game\nq. quit to menu\n");
+	moveCursor(Menu);
+	//printf("welcome to blackjack\na. play game\nq. quit to menu\n");
+	printf("                                     ┌──────────────────────────────────────────────────────────────────────────┐\n");
+	printf("                                     │                           Welcome To Blackjack                           │\n");
+	printf("                                     │ ~blackjack pays 3:2~       ~table minimum 2~   ~dealer stands on all 17~ │\n");
+	printf("                                     │                                                                          │\n");
+	printf("                                     ├──────────────────────────────────────────────────────────────────────────┤\n");
+	printf("                                     │                                                                          │\n");
+	printf("                                     ├──────────────────┬──────────────────┬──────────────────┬─────────────────┤\n");
+	printf("                                     │                  │                  │                  │                 │\n");
+	printf("                                     └──────────────────┴──────────────────┴──────────────────┴─────────────────┘\n");
+
+	printOptions("a. play round", "q. quit", "", "");
+}
+
+
+void printStatus(char message[]) {
+
+	moveCursor(Status);
+	printf("                                     │                     %-53s│\n",message);
+
+}
+
+void printOptions(char opt1[], char opt2[], char opt3[], char opt4[]) {
+	moveCursor(Option);
+	printf("                                     │  %-16s│  %-16s│  %-16s│ %-16s│\n", opt1, opt2, opt3, opt4);
+
+}
+
+void printBet(int be,int ba) {
+	moveCursor(Betting);
+	printf("                                     │                   your bet: %-8d|      balance: %-21d│\n",be,ba);
 }
 

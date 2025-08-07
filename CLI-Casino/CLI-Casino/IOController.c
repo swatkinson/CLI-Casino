@@ -31,7 +31,7 @@ void MainMenu(USER User) {
             break;
         case 'c':
             WipeScreen();
-            runBJ(User);
+            runBJ(&User);
             break;
         case 'q':
             WipeScreen();
