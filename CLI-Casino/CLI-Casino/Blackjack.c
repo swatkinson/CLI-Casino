@@ -3,6 +3,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Blackjack.h"
 #include <stdio.h>
+#include <Windows.h>
+
 
 #define ROYAL_VAL 10//for tens and aces too
 #define MIN_BET 2//arbitrary according to real life table mins
@@ -79,7 +81,7 @@ void runBJ(USER* u) {//change to *u once we integrate
 
 			//players aren't initialized yet, so we use an int to send the bet
 			bet = getBet(u);
-			printBet(bet,u->balance);
+			printBet(bet,(int)u->balance);//not using decimals, gets rid of warnings
 			printStatus("");//in case they still have a money status on
 
 			playRound(u, &fd, bet);
@@ -230,7 +232,7 @@ void playerTurn(USER* u, FULLDECK* fd, BJPLAYER* p, BJPLAYER* splip) {
 		splip->hand[1] = drawCard(fd);
 		splip->bet = p->bet; //split bet is same as starting bet
 		u->balance -= p->bet; //removing balance directly kind of feels off, but whatever
-		printBet(p->bet, u->balance);//split bet is the same so doesnt matter
+		printBet(p->bet, (int)u->balance);//split bet is the same so doesnt matter
 
 		//continuing to play first hand
 		p->hand[1] = drawCard(fd); //not incrementing because we're replacing the card we had
@@ -246,7 +248,7 @@ void playerTurn(USER* u, FULLDECK* fd, BJPLAYER* p, BJPLAYER* splip) {
 		//as its name implies, bet is doubled
 		u->balance -= p->bet; //removing balance directly kind of feels off, but whatever
 		p->bet += p->bet;//this surprisingly works
-		printBet(p->bet,u->balance);
+		printBet(p->bet,(int)u->balance);
 
 		//visuals for facedown card
 		p->hand[p->handsize] = fd->facedown;
@@ -295,7 +297,7 @@ void availableMoves(BJPLAYER* p, char options[]) {
 
 	printOptions((canhit) ? "a. hit" : "", "b. stand", (cansplit) ? "c. split" : "", (canddown) ? "d. double down" : "");
 
-	return options;
+	return;
 }
 
 
@@ -349,10 +351,10 @@ void payout(USER* u, BJPLAYER* p, BJPLAYER* d) {
 		winnings = p->bet; //get your bet back; 'push'
 	}
 	else if (p->state == BJed) {
-		winnings = p->bet * BJ_PAYOUT; //big win!
+		winnings = (int)(p->bet * BJ_PAYOUT); //big win!
 	}
 	else if (BLACKJACK - p->score < BLACKJACK - d->score || d->state == Busted) {
-		winnings = p->bet * REG_PAYOUT;//win!
+		winnings = (int)(p->bet * REG_PAYOUT);//win!
 	}
 	else {
 		winnings = 0;
