@@ -12,7 +12,7 @@ IOController is the user input output handler which is responsible for:
 
 void MainMenu(PUSER User);
 
-void DisplayMainMenuOptions();
+void DisplayMainMenuOptions(PUSER User);
 
 char GetUserInput(char* ValidChars);
 

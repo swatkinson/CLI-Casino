@@ -12,7 +12,7 @@ void MainMenu(PUSER User) {
 	{
 		// Display menu
 		WipeScreen();
-		DisplayMainMenuOptions();
+		DisplayMainMenuOptions(User);
 
 		// Ask for input
 		char userInput = GetUserInput("abcq");
@@ -44,7 +44,8 @@ void MainMenu(PUSER User) {
 	}
 }
 
-void DisplayMainMenuOptions() {
+void DisplayMainMenuOptions(PUSER User) {
+	printf("Welcome %s!\n", User->username);
 	printf("Which game do you want to play?\n");
 	printf("---------------------------\n");
 	printf("a. Slots\n");
@@ -63,8 +64,6 @@ char GetUserInput(char* ValidChars) {
 		printf("Please enter your selection (%s): ", ValidChars);
 		selected = fgetc(stdin);
 		
-		ClearInputBuffer();
-
 		// Check if selected is in validChars
 		for (int i = 0; ValidChars[i] != '\0'; i++) {
 			if (selected == ValidChars[i]) {
@@ -76,6 +75,7 @@ char GetUserInput(char* ValidChars) {
 			printf("Invalid selection. Please try again.\n");
 		}
 	}
+	ClearInputBuffer();
 	return selected;
 }
 
