@@ -27,7 +27,7 @@ typedef enum { ALL_TEST, SLOT_TEST, POKER_TEST, BLACKJACK_TEST, NO_TEST } TEST_T
 
 #define BLACKJACK_FLAG "-blackjack"
 #define BLACKJACK_TEST_FILE "Blackjack_IntegrationTest.txt"
-#define BLACKJACK_EXPECTED_BAL -1 // NOT YET IMPLEMENTED
+#define BLACKJACK_EXPECTED_BAL 890
 
 #define TENSION 500 // Time delay for dramatic effect
 
