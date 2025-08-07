@@ -1,4 +1,4 @@
-// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
+// CLI Casino | Spencer Watkinson | CSCN71030
 // Interface of the Slots module
 
 // The Slots module is responsible for running the slots menu, allowing users to change their bet amount, see their balance, "run" the game, and quit.
