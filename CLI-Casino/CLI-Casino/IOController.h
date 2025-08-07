@@ -1,19 +1,21 @@
 // CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
-/* Interface of IOController module
-
-IOController is the user input output handler which is responsible for:
-- [ ] Command line args, which will allow users to access "godmode" and edit files and player balances directly
-- [X] Main menu, which allows users to navigate to the games
-- [ ] Profile Management / Login, which allows the user to select specific accounts to play with
-*/
+// Interface of IOController module
 
 #pragma once
 #include "User.h"
+#include "IntegrationTest.h"
 
+#define EXE_NAME "CLICasino.exe"
+
+// ---------- MENU LOGIC ----------
 void MainMenu(PUSER User);
 
 void DisplayMainMenuOptions();
 
+// ---------- COMMAND LINE ARGS ----------
+TEST_TYPE CheckCommandLineArgs(int Argc, char* Argv[]);
+
+// ---------- UI HELPER FUNCTIONS ----------
 char GetUserInput(char* ValidChars);
 
 void WipeScreen();

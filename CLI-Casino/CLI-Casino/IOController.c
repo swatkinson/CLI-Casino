@@ -89,3 +89,27 @@ void ClearInputBuffer() {
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF);
 }
+
+TEST_TYPE CheckCommandLineArgs(int Argc, char* Argv[]) {
+	if (Argc == 1) return NO_TEST; // No command line arguments provided
+
+	// Valid flags:
+	if (strcmp(Argv[1], ALL_FLAG) == 0)			return ALL_TEST;
+	if (strcmp(Argv[1], SLOTS_FLAG) == 0)		return SLOT_TEST;
+	if (strcmp(Argv[1], POKER_FLAG) == 0)		return POKER_TEST;
+	if (strcmp(Argv[1], BLACKJACK_FLAG) == 0)	return POKER_TEST;
+
+	// If no valid flag was given:
+	printf("Usage: .\%s <test flag>\n", EXE_NAME);
+	printf(
+		"Valid test flags: \n"
+		"%-10s - All Integration Tests \n"
+		"%-10s - Slots Integration Tests \n"
+		"%-10s - Poker Integration Tests \n"
+		"%-10s - Blackjack Integration Tests \n",
+		ALL_FLAG, SLOTS_FLAG, POKER_FLAG, BLACKJACK_FLAG
+	);
+
+	exit(EXIT_FAILURE);
+
+}
