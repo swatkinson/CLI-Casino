@@ -12,8 +12,7 @@ void IntegrationTestRunner(TEST_TYPE TestType) {
 
 	printf("Running Integration Tests:\n");
 	IntegrationTestFlag = true; // Makes games run at instant speed
-	srand(1234567890);			// Set the seed of the randomizer so that we get the expected results
-
+	
 	switch (TestType) {
 
 	case ALL_TEST:
@@ -42,6 +41,8 @@ void IntegrationTest(char* TestFile, int ExpectedBalance) {
 	Sleep(TENSION);
 	printf("%-30s- ", TestFile);
 	Sleep(TENSION); // This is for you, Sebastian
+
+	srand(1234567890); // Set the seed of the randomizer so that we get the expected results
 
 	PUSER testUser = CreateUser(DEFAULT_USERNAME, DEFAULT_BALANCE);
 
