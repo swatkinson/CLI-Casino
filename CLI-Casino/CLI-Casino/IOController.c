@@ -117,7 +117,7 @@ void DisplayWindowBoundary(int width, int height) {
 	}
 
 	// Centered message
-	const char* centerMessage = "Please enlarge your terminal or zoom out until you see all borders. Press any key to continue.";
+	const char* centerMessage = "Please enlarge your terminal or zoom out until you see all borders. Press any enter to continue.";
 	int messageRow = height / 2 - 10;
 	int messageCol = (width - (int)strlen(centerMessage)) / 2;
 
