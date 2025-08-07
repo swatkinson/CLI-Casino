@@ -48,6 +48,9 @@
     <ClCompile Include="IOController.c">
       <Filter>Source Files\Controllers</Filter>
     </ClCompile>
+    <ClCompile Include="User.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cards.h">

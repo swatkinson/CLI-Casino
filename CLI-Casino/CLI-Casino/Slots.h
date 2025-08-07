@@ -51,7 +51,7 @@ const char* GetRandomSymbol();
 // ---------- SLOTS LOGIC FUNCTIONS ----------
 
 /// Looping slots menu - Handles pathing
-USER SlotsGame(USER User);
+void SlotsGame(PUSER User);
 
 /// Runs the slot machine, returns the winnings based on the bet input
 double RunSlots(int Bet);
@@ -62,7 +62,7 @@ double RunSlots(int Bet);
 void PrintSlotsMenu(int Bet);
 
 /// Changes the user info in the slots menu header
-void UpdateSlotsMenu(USER User, int Bet);
+void UpdateSlotsMenu(PUSER User, int Bet);
 
 /// Runs the slot machine spinning animation
 void SlotMachineAnimation(const char* S1, const char* S2, const char* S3);

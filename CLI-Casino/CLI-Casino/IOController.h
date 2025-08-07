@@ -10,7 +10,7 @@ IOController is the user input output handler which is responsible for:
 #pragma once
 #include "User.h"
 
-void MainMenu(USER User);
+void MainMenu(PUSER User);
 
 void DisplayMainMenuOptions();
 

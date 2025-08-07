@@ -18,8 +18,8 @@ void PrintSlotsMenu(int Bet) {
     PrintSlotMachine(Bet);
 }
 
-void UpdateSlotsMenu(USER User, int Bet) {
-    printf("\033[7;0H│                                  Current Bet: %-10d           Current Balance: %-10.0lf                       │\n", Bet, User.balance);
+void UpdateSlotsMenu(PUSER User, int Bet) {
+    printf("\033[7;0H│                                  Current Bet: %-10d           Current Balance: %-10.0lf                       │\n", Bet, User->balance);
 }
 
 void MoveCursorToInput() {
@@ -47,7 +47,7 @@ void PrintUnderSlots(const char* format, ...) {
     va_end(args);
 }
 
-USER SlotsGame(USER User) {
+void SlotsGame(PUSER User) {
     int bet = INITIAL_BET;
 
     // Initialize Display
@@ -64,18 +64,18 @@ USER SlotsGame(USER User) {
         switch (userInput) {
         case 'a': // Run Slots
 
-            if (User.balance < bet) {
+            if (User->balance < bet) {
                 PrintUnderSlots("You do not have enough balance to place this bet. Please lower your bet.\n");
                 continue; // Go back to the menu
             }
 
             // Charge user bet, and display that in menu
-            User.balance -= bet;
+            User->balance -= bet;
             UpdateSlotsMenu(User, bet);
 
             // Run slot machine
             double winnings = RunSlots(bet);
-            User.balance += winnings;
+            User->balance += winnings;
 
             // Winning message under slot machine
             DisplayWinnings(winnings);
@@ -101,7 +101,7 @@ USER SlotsGame(USER User) {
             break;
 
         case 'q': // Quit
-            return User;
+            return;
             break;
         } // No default needed, input checking exists in the getuserinput function
 

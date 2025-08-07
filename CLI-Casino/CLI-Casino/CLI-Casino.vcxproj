@@ -135,6 +135,7 @@
     <ClCompile Include="Main.c" />
     <ClCompile Include="Poker.c" />
     <ClCompile Include="Slots.c" />
+    <ClCompile Include="User.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blackjack.h" />
