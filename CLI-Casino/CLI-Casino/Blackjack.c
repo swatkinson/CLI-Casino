@@ -146,10 +146,10 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 
 	//displaying the cards, sleeps are to make it look good (insant full hands looks bad)
 	//sleep numbers are magic I guess but I really don't think they matter?
-	Sleep(IntegrationTestFlag ? 0 : 100);
+	tension(100);
 	moveCursor(DEALER_LOC);
 	displayHand(d->hand, d->handsize);
-	Sleep(IntegrationTestFlag ? 0 : 400);
+	tension(400);
 	moveCursor(PLAYER_LOC);
 	displayHand(p->hand, p->handsize);
 
@@ -164,7 +164,7 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 	
 	//if dealer has a possibility of blackjack
 	if (getValue(d->hand[0]) >= ROYAL_VAL) {//cant use score here because its specifically about the first card
-		Sleep(IntegrationTestFlag ? 0 : 700);//tension
+		tension(700);
 
 		if (d->state == BJed) {
 			moveCursor(DEALER_LOC);
@@ -302,7 +302,7 @@ void availableMoves(BJPLAYER* p, char options[]) {
 
 
 void dealerTurn(FULLDECK* fd, BJPLAYER* d) {
-	Sleep(IntegrationTestFlag ? 0 : 500);//tension
+	tension(500);//tension
 
 	//reveals their hidden card
 	moveCursor(DEALER_LOC);
@@ -314,7 +314,7 @@ void dealerTurn(FULLDECK* fd, BJPLAYER* d) {
 		d->handsize++;
 		d->score = scoreHand(d->hand, d->handsize, &d->state);
 
-		Sleep(IntegrationTestFlag ? 0 : 500);//more tension
+		tension(500);//more tension
 		moveCursor(DEALER_LOC);//to overwrite previously drawn
 		displayHand(d->hand, d->handsize);
 	}
@@ -328,10 +328,10 @@ void payout(USER* u, BJPLAYER* p, BJPLAYER* d) {
 	displayHand(d->hand, d->handsize);
 
 	if (p->state == Ddowned)
-		Sleep(IntegrationTestFlag ? 0 : 600);//tension
+		tension(600);
 	moveCursor(PLAYER_LOC);
 	displayHand(p->hand, p->handsize);
-	Sleep(IntegrationTestFlag ? 0 : 700);//super tension before scoring
+	tension(700);
 
 	//updating final scores
 	p->score = scoreHand(p->hand, p->handsize, &p->state);
@@ -457,10 +457,10 @@ void printBet(int be,int ba) {
 	printf("                                     │                   your bet: %-8d|      balance: %-21d│\n",be,ba);
 }
 
-//instead of just sleeping raw
-void tension(int ttimems){
-//	if (IntegrationTestFlag == true)
-//		return;
-//	else
-		Sleep(ttimems);
+// Sleep for tension between card animations
+void tension(int timeMs){
+	if (IntegrationTestFlag == true)
+		return;
+	else
+		Sleep(timeMs);
 }
