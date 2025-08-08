@@ -131,6 +131,7 @@
     <ClCompile Include="Blackjack.c" />
     <ClCompile Include="Cards.c" />
     <ClCompile Include="FileIO.c" />
+    <ClCompile Include="IntegrationTest.c" />
     <ClCompile Include="IOController.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Poker.c" />
@@ -141,6 +142,7 @@
     <ClInclude Include="Blackjack.h" />
     <ClInclude Include="Cards.h" />
     <ClInclude Include="FileIO.h" />
+    <ClInclude Include="IntegrationTest.h" />
     <ClInclude Include="IOController.h" />
     <ClInclude Include="Poker.h" />
     <ClInclude Include="Slots.h" />

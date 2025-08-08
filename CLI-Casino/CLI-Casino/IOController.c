@@ -1,4 +1,4 @@
-// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
+// CLI Casino | Spencer Watkinson | CSCN71030
 // Implementation of IOController module
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -84,7 +84,7 @@ char GetUserInput(char* ValidChars) {
 void WipeScreen() {
 	system("cls");
 	printf("\033[91m 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 \n \033[0m");
-	printf("\033[90m======================================================================================================================= \n\033[0m");
+	printf("\033[90m=======================================================================================================================\n\033[0m");
 }
 
 void ClearInputBuffer() {

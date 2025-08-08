@@ -16,6 +16,7 @@
 #define DDOWN_UB 12
 #define WIND_WID 120
 
+extern bool IntegrationTestFlag;
 
 BJPLAYER initplayer() {
 	BJPLAYER p = { 0 };
@@ -163,7 +164,7 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 	
 	//if dealer has a possibility of blackjack
 	if (getValue(d->hand[0]) >= ROYAL_VAL) {//cant use score here because its specifically about the first card
-		tension(700);//tension
+		tension(700);
 
 		if (d->state == BJed) {
 			moveCursor(DEALER_LOC);
@@ -327,10 +328,10 @@ void payout(USER* u, BJPLAYER* p, BJPLAYER* d) {
 	displayHand(d->hand, d->handsize);
 
 	if (p->state == Ddowned)
-		tension(600);//tension
+		tension(600);
 	moveCursor(PLAYER_LOC);
 	displayHand(p->hand, p->handsize);
-	tension(700);//super tension before scoring
+	tension(700);
 
 	//updating final scores
 	p->score = scoreHand(p->hand, p->handsize, &p->state);
@@ -456,10 +457,10 @@ void printBet(int be,int ba) {
 	printf("                                     │                   your bet: %-8d|      balance: %-21d│\n",be,ba);
 }
 
-//instead of just sleeping raw
-void tension(int ttimems){
-//	if (IntegrationTestFlag == true)
-//		return;
-//	else
-		Sleep(ttimems);
+// Sleep for tension between card animations
+void tension(int timeMs){
+	if (IntegrationTestFlag == true)
+		return;
+	else
+		Sleep(timeMs);
 }
