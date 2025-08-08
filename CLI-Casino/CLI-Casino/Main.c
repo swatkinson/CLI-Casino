@@ -16,7 +16,7 @@ int main(void) {
 	// Check & run command line args (will exit if there are args, doesnt run main logic)
 
 	// Run integration tests
-	IntegrationTestRunner( ALL_TEST ); // Switch this to the correct TEST_TYPE to run tests, will be changed to command line args in that branch.
+	//IntegrationTestRunner( ALL_TEST ); // Switch this to the correct TEST_TYPE to run tests, will be changed to command line args in that branch.
 
 	// User Selection
 
