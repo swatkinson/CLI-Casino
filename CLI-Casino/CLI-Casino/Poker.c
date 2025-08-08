@@ -1,3 +1,5 @@
+// CLI Casino | Ricardo Pineda Pelaez | CSCN71030 
+//implementation for all Poker stuff.
 #define _CRT_SECURE_NO_WARNINGS
 #include "Poker.h"
 #include <stdio.h>
@@ -214,39 +216,39 @@ void CalculateScore(HAND hand, PUSER user, int* pot) {
 	
 	if (IsRoyalFlush(hand)) {
 		printf("You got a Royal Flush!\n");
-		mult = 21;
+		mult = ROYAL_FLUSH_PAYOUT;
 	}
 	else if (IsFourOfaKind(hand)) {
 		printf("You got a Four of a Kind!\n");
-		mult = 17;
+		mult = FOUR_OF_A_KIND_PAYOUT;
 	}
 	else if (IsFullHouse(hand)) {
 		printf("You got a Full House!\n");
-		mult = 14;
+		mult = FULL_HOUSE_PAYOUT;
 	}
 	else if (IsFlush(hand)) {
 		printf("You got a Flush!\n");
-		mult = 9;
+		mult = FLUSH_PAYOUT;
 	}
 	else if (IsStraight(hand)) {
 		printf("You got a Straight!\n");
-		mult = 6;
+		mult = STRAIGHT_PAYOUT;
 	}
 	else if (IsThreeOfaKind(hand)) {
 		printf("You got a Three of a Kind!\n");
-		mult = 4;
+		mult = THREE_OF_A_KIND_PAYOUT;
 	}
 	else if (IsTwoPair(hand)) {
 		printf("You got Two Pair!\n");
-		mult = 1;
+		mult = TWO_PAIR_PAYOUT;
 	}
 	else if (IsPair(hand)) {
 		printf("You got a Pair!\n");
-		mult = 0.5;
+		mult = PAIR_PAYOUT;
 	}
 	else if (IsHighCard()) {
 		printf("You got nothing!\n");
-		mult = 0;
+		mult = HIGH_CARD_PAYOUT;
 	}
 	else {
 		printf("Invalid hand.");

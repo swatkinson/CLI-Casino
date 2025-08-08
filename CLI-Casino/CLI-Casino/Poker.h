@@ -1,3 +1,5 @@
+// CLI Casino | Ricardo Pineda Pelaez | CSCN71030 
+//int for all Poker stuff.
 #pragma once
 
 #include <stdbool.h>
@@ -13,6 +15,17 @@
 typedef struct hand {
 	CARD cards[HAND_SIZE];
 }HAND, *PHAND;
+
+
+#define ROYAL_FLUSH_PAYOUT					150
+#define FOUR_OF_A_KIND_PAYOUT				8
+#define FULL_HOUSE_PAYOUT					5
+#define FLUSH_PAYOUT						4
+#define STRAIGHT_PAYOUT						3
+#define THREE_OF_A_KIND_PAYOUT				2
+#define TWO_PAIR_PAYOUT						1
+#define PAIR_PAYOUT							0.5
+#define HIGH_CARD_PAYOUT					0
 
 
 //Betting stuff
