@@ -20,7 +20,7 @@ void PrintSlotsMenu(int Bet) {
 }
 
 void UpdateSlotsMenu(PUSER User, int Bet) {
-    printf("\033[7;0H│                                  Current Bet: %-10d           Current Balance: %-10.0lf                       │\n", Bet, User->balance);
+    printf("\033[6;0H│                                  Current Bet: %-10d           Current Balance: %-10.0lf                       │\n", Bet, User->balance);
 }
 
 void MoveCursorToInput() {
@@ -191,9 +191,9 @@ void SlotMachineAnimation(const char* S1, const char* S2, const char* S3) {
         if (i >= SPIN_STEPS*3) colLock3 = true; // Locks column 3 symbol after SPIN_STEPS x3
 
         // Moves Cursor v         v Locks Columns
-        printf("\033[14;53H %s", colLock1 ? S1 : Symbols[i % SYMBOL_COUNT]);
-        printf("\033[14;59H %s", colLock2 ? S2 : Symbols[i % SYMBOL_COUNT]);
-        printf("\033[14;65H %s", colLock3 ? S3 : Symbols[i % SYMBOL_COUNT]);
+        printf("\033[13;53H %s", colLock1 ? S1 : Symbols[i % SYMBOL_COUNT]);
+        printf("\033[13;59H %s", colLock2 ? S2 : Symbols[i % SYMBOL_COUNT]);
+        printf("\033[13;65H %s", colLock3 ? S3 : Symbols[i % SYMBOL_COUNT]);
 
         Sleep(SPIN_DELAY);
     }
