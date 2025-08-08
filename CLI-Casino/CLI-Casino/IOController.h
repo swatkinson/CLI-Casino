@@ -1,5 +1,5 @@
-// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
-// Interface of IOController module
+// CLI Casino | Spencer Watkinson | CSCN71030
+//Interface of IOController module
 
 #pragma once
 #include "User.h"
@@ -10,7 +10,7 @@
 // ---------- MENU LOGIC ----------
 void MainMenu(PUSER User);
 
-void DisplayMainMenuOptions();
+void DisplayMainMenuOptions(PUSER User);
 
 // ---------- COMMAND LINE ARGS ----------
 TEST_TYPE CheckCommandLineArgs(int Argc, char* Argv[]);

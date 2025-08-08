@@ -1,4 +1,4 @@
-// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
+// CLI Casino | Spencer Watkinson | CSCN71030
 // Interface of the Integration Test module
 
 #pragma once

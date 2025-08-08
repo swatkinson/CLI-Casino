@@ -1,4 +1,4 @@
-// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
+// CLI Casino | Spencer Watkinson | CSCN71030
 // Implementation of IOController module
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -16,7 +16,7 @@ void MainMenu(PUSER User) {
 	{
 		// Display menu
 		WipeScreen();
-		DisplayMainMenuOptions();
+		DisplayMainMenuOptions(User);
 
 		// Ask for input
 		char userInput = GetUserInput("abcq");
@@ -46,7 +46,8 @@ void MainMenu(PUSER User) {
 	}
 }
 
-void DisplayMainMenuOptions() {
+void DisplayMainMenuOptions(PUSER User) {
+	printf("Welcome %s!\n", User->username);
 	printf("Which game do you want to play?\n");
 	printf("---------------------------\n");
 	printf("a. Slots\n");
@@ -65,8 +66,6 @@ char GetUserInput(char* ValidChars) {
 		printf("Please enter your selection (%s): ", ValidChars);
 		selected = fgetc(stdin);
 		
-		ClearInputBuffer();
-
 		// Check if selected is in validChars
 		for (int i = 0; ValidChars[i] != '\0'; i++) {
 			if (selected == ValidChars[i]) {
@@ -78,13 +77,14 @@ char GetUserInput(char* ValidChars) {
 			printf("Invalid selection. Please try again.\n");
 		}
 	}
+	ClearInputBuffer();
 	return selected;
 }
 
 void WipeScreen() {
 	system("cls");
 	printf("\033[91m 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 \n \033[0m");
-	printf("\033[90m======================================================================================================================= \n\033[0m");
+	printf("\033[90m=======================================================================================================================\n\033[0m");
 }
 
 void ClearInputBuffer() {
