@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Poker.h"
 #include <stdio.h>
 
@@ -12,7 +13,7 @@ bool BuyIn(PUSER user) {
 	}
 }
 
-bool Raise(PUSER user) {
+bool Raise(PUSER user, int* pot) {
 	int raiseAmount = 0;
 
 	while (1) {
@@ -27,6 +28,7 @@ bool Raise(PUSER user) {
 			}
 			else {
 				user->balance -= raiseAmount;
+				(*pot) += raiseAmount;
 				return true;
 				break;
 			}
@@ -74,8 +76,21 @@ void countRanksAndSuits(HAND hand, int* rankCount, int* suitCount) {
 }
 
 
-bool IsRoyalFlush(PHAND hand) {
+bool IsRoyalFlush(HAND hand) {
+	// Check if all cards are the same suit
+	SUIT suit = hand.cards[0].sui;
+	for (int i = 1; i < 5; i++) {
+		if (hand.cards[i].sui != suit)
+			return false;
+	}
 
+	// Expected ranks in order: 10, J, Q, K, A -> values: 10 to 14
+	for (int i = 0; i < 5; i++) {
+		if (getRankValue(hand.cards[i].ran) != 10 + i)
+			return false;
+	}
+
+	return true;
 }
 
 bool IsFourOfaKind(HAND hand) {
@@ -181,32 +196,37 @@ bool IsHighCard() {
 	return true;
 }
 
-int CalculateScore(HAND hand) {
-	if (IsRoyalFlush(&hand))
-		return;
+int CalculateScore(HAND hand, PUSER user, int* pot) {
+	float mult = 1;
+	
+	if (IsRoyalFlush(hand))
+		mult = 21;
 	else if (IsFourOfaKind(hand))
-		return;
+		mult = 17;
 	else if (IsFullHouse(hand))
-		return;
+		mult = 14;
 	else if (IsFlush(hand))
-		return;
+		mult = 9;
 	else if (IsStraight(hand))
-		return;
+		mult = 6;
 	else if (IsThreeOfaKind(hand))
-		return;
+		mult = 4;
 	else if (IsTwoPair(hand))
-		return;
+		mult = 1;
 	else if (IsPair(hand))
-		return;
+		mult = 0.5;
 	else if (IsHighCard(hand))
-		return;
+		mult = 0;
 	else {
 		printf("Invalid hand.");
 		exit(EXIT_FAILURE);
 	}
+
+	user->balance = ((*pot)*mult) + user->balance;
+	printf("New balance is: %lf", user->balance);
 }
 
-void IngamePokerMenu(PUSER user, FULLDECK fd) {
+void IngamePokerMenu(PUSER user, FULLDECK fd, int* pot) {
 	printf("would you like to:\n"
 		"a. Raise\n"
 		"b. Check\n"
@@ -218,12 +238,10 @@ void IngamePokerMenu(PUSER user, FULLDECK fd) {
 	switch (choice)
 	{
 	case 'a':
-		Raise(user);
-		drawCard(&fd);
+		Raise(user, pot);
 		break;
 	case'b':
 		Check();
-		drawCard(&fd);
 		break;
 	case'q':
 		Fold();
@@ -232,22 +250,25 @@ void IngamePokerMenu(PUSER user, FULLDECK fd) {
 	default:
 		break;
 	}
+	ClearInputBuffer();
+	WipeScreen();
 }
 
 void RunPoker(PUSER user) {
-	FULLDECK fd;
+	FULLDECK fd = initDeck();
 	HAND hand = { 0 };
 	int size = 0;
-	//if these magic numbes are still here, its cuz I forgot to remove them after I was done testing
+	int pot = 0;
 	hand = DrawCardSorted(&fd, hand, &size);
 	hand = DrawCardSorted(&fd, hand, &size);
 	hand = DrawCardSorted(&fd, hand, &size);
+	displayHand(hand.cards, 3);
+	IngamePokerMenu(user, fd, &pot);
+	displayHand(hand.cards, 4);
+	IngamePokerMenu(user, fd, &pot);
+	displayHand(hand.cards, 5);
 
-	IngamePokerMenu(user, fd);
-
-	IngamePokerMenu(user, fd);
-
-
+	CalculateScore(hand, user, &pot);
 }
 
 void PokerMenu(PUSER user) {
