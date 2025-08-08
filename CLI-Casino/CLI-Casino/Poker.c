@@ -43,10 +43,6 @@ void Check() {
 	//the game going without adding anything to the pot
 }
 
-void Fold() {
-	printf("You have folded.\n");
-}
-
 HAND DrawCardSorted(FULLDECK* fd, HAND hand, int* size) {
 	CARD cardIN = drawCard(fd);
 
@@ -268,7 +264,6 @@ void IngamePokerMenu(PUSER user, FULLDECK fd, int* pot) {
 	printf("Would you like to:\n"
 		"a. Raise\n"
 		"b. Check\n"
-		"q. Fold\n"
 	);
 
 	char choice = GetUserInput("abq");
@@ -280,10 +275,6 @@ void IngamePokerMenu(PUSER user, FULLDECK fd, int* pot) {
 		break;
 	case'b':
 		Check();
-		break;
-	case'q':
-		Fold();
-		return;
 		break;
 	default:
 		break;

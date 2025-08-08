@@ -23,8 +23,6 @@ bool Raise(PUSER user, int *pot);
 
 void Check();
 
-void Fold();
-
 HAND DrawCardSorted(FULLDECK* fd, HAND hand, int* size);
 
 void SortHandByRank(HAND* hand, int size);
