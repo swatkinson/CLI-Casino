@@ -17,16 +17,24 @@ typedef struct hand {
 
 //Betting stuff
 
-bool BuyIn(PUSER user);
+bool BuyIn(PUSER user, int* pot);
 
-bool Raise(PUSER user);
+bool Raise(PUSER user, int *pot);
 
 void Check();
 
 void Fold();
 
+HAND DrawCardSorted(FULLDECK* fd, HAND hand, int* size);
+
+void SortHandByRank(HAND* hand, int size);
+
+int getRankValue(RANK r);
+
+void countRanksAndSuits(HAND hand, int* rankCount, int* suitCount);
+
 //Checking hand type
-bool IsRoyalFlush(PHAND hand);
+bool IsRoyalFlush(HAND hand);
 
 bool IsFourOfaKind(HAND hand);
 
@@ -44,10 +52,14 @@ bool IsPair(HAND hand);
 
 bool IsHighCard();
 
-int CalculateScore(HAND hand);
+void CalculateScore(HAND hand, PUSER user, int* pot);
 
 //Running the game
-void IngamePokerMenu(PUSER user, FULLDECK fd);
+void IngamePokerMenu(PUSER user, FULLDECK fd, int* pot);
+
+int CardsToDiscard();
+
+int RedrawCards(HAND hand);
 
 void RunPoker(PUSER user);
 

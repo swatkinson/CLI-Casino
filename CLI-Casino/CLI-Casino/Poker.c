@@ -1,14 +1,16 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Poker.h"
 #include <stdio.h>
+#include <Windows.h>
 
-bool BuyIn(PUSER user) {
+bool BuyIn(PUSER user, int* pot) {
 	if (user->balance - BUY_IN < 0) {
 		printf("You do not have enough funds to enter the table.");
 		return false;
 	}
 	else {
 		user->balance -= BUY_IN;
+		*pot += BUY_IN;
 		return true;
 	}
 }
@@ -28,9 +30,8 @@ bool Raise(PUSER user, int* pot) {
 			}
 			else {
 				user->balance -= raiseAmount;
-				(*pot) += raiseAmount;
+				*pot += raiseAmount;
 				return true;
-				break;
 			}
 		}
 	}
@@ -62,6 +63,22 @@ HAND DrawCardSorted(FULLDECK* fd, HAND hand, int* size) {
 	return hand;
 }
 
+void SortHandByRank(HAND* hand, int size) {
+
+	if (size > HAND_SIZE)
+		return;
+
+	for (int i = 0; i < size - 1; i++) {
+		for (int j = 0; j < size - i - 1; j++) {
+			if (hand->cards[j].ran > hand->cards[j + 1].ran) {
+				CARD temp = hand->cards[j];
+				hand->cards[j] = hand->cards[j + 1];
+				hand->cards[j + 1] = temp;
+			}
+		}
+	}
+}
+
 int getRankValue(RANK r) {
 	if (r == Ace) return 14; // Ace high
 	return (int)r + 1; // Convert enum 0-based to 1-based
@@ -74,7 +91,6 @@ void countRanksAndSuits(HAND hand, int* rankCount, int* suitCount) {
 		suitCount[hand.cards[i].sui]++;
 	}
 }
-
 
 bool IsRoyalFlush(HAND hand) {
 	// Check if all cards are the same suit
@@ -196,7 +212,7 @@ bool IsHighCard() {
 	return true;
 }
 
-int CalculateScore(HAND hand, PUSER user, int* pot) {
+void CalculateScore(HAND hand, PUSER user, int* pot) {
 	float mult = 1;
 	
 	if (IsRoyalFlush(hand))
@@ -215,14 +231,14 @@ int CalculateScore(HAND hand, PUSER user, int* pot) {
 		mult = 1;
 	else if (IsPair(hand))
 		mult = 0.5;
-	else if (IsHighCard(hand))
+	else if (IsHighCard())
 		mult = 0;
 	else {
 		printf("Invalid hand.");
 		exit(EXIT_FAILURE);
 	}
 
-	user->balance = ((*pot)*mult) + user->balance;
+	user->balance = (*pot * mult) + user->balance;
 	printf("New balance is: %lf", user->balance);
 }
 
@@ -254,33 +270,96 @@ void IngamePokerMenu(PUSER user, FULLDECK fd, int* pot) {
 	WipeScreen();
 }
 
-void RunPoker(PUSER user) {
+int CardsToDiscard() {
+	int card = 0;
+	while (1) {
+		printf("Which card would you like to discrad (1-5)");
+		if (scanf("%d", &card) != 1) {
+			printf("invalid input. Please try again!\n");
+		}
+		else {
+			if (card > HAND_SIZE || card <= 0) {
+				printf("Invalid number of cards inputed. Please try again!\n");
+			}
+			else {
+				
+				return card;
+			}
+		}
+	}
+}
+
+int RedrawCards(HAND* hand, FULLDECK* fd) {
+	printf("Do you want to discard any cards? y/n: ");
+	char answer = GetUserInput("yn");
+
+	if (answer == 'n') return 0;
+
+	int numDiscard = 0;
+	printf("How many cards do you want to discard (1–4)? ");
+	scanf("%d", &numDiscard);
+
+	if (numDiscard <= 0 || numDiscard >= HAND_SIZE) {
+		printf("Invalid number.\n");
+		return 0;
+	}
+
+	int indexes[4] = { -1, -1, -1, -1 };
+	for (int i = 0; i < numDiscard; ++i) {
+		indexes[i] = CardsToDiscard() - 1;
+		if (indexes[i] < 0 || indexes[i] >= HAND_SIZE) {
+			printf("Invalid card number. Try again.\n");
+			return 0;
+		}
+	}
+
+	for (int i = 0; i < numDiscard; ++i) {
+		hand->cards[indexes[i]] = drawCard(fd);
+	}
+
+	SortHandByRank(hand, HAND_SIZE);
+	return numDiscard;
+}
+
+
+void RunPoker(PUSER user, int pot) {
 	FULLDECK fd = initDeck();
 	HAND hand = { 0 };
 	int size = 0;
-	int pot = 0;
 	hand = DrawCardSorted(&fd, hand, &size);
 	hand = DrawCardSorted(&fd, hand, &size);
 	hand = DrawCardSorted(&fd, hand, &size);
-	displayHand(hand.cards, 3);
+	hand = DrawCardSorted(&fd, hand, &size);
+	hand = DrawCardSorted(&fd, hand, &size);
+	displayHand(hand.cards, 5);
+	
 	IngamePokerMenu(user, fd, &pot);
-	displayHand(hand.cards, 4);
-	IngamePokerMenu(user, fd, &pot);
+
+	displayHand(hand.cards, 5);
+
+	int missing = RedrawCards(&hand, &fd);
+	
+	for (int i = 0; i < missing; i++) {
+		hand = DrawCardSorted(&fd, hand, &size);
+	}
+	
 	displayHand(hand.cards, 5);
 
 	CalculateScore(hand, user, &pot);
+
+	Sleep(2000);
 }
 
 void PokerMenu(PUSER user) {
 	printf("a. Play\nq. Leave");
-
+	int pot;
 	char choice = GetUserInput("aq");
 
 	switch (choice)
 	{
 	case'a':
-		if (BuyIn) {
-			RunPoker(user);
+		if (BuyIn(user, &pot)) {
+			RunPoker(user, pot);
 		}
 		break;
 	case'q':
