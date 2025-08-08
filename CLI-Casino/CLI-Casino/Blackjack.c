@@ -16,6 +16,7 @@
 #define DDOWN_UB 12
 #define WIND_WID 120
 
+extern bool IntegrationTestFlag;
 
 BJPLAYER initplayer() {
 	BJPLAYER p = { 0 };
@@ -145,10 +146,10 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 
 	//displaying the cards, sleeps are to make it look good (insant full hands looks bad)
 	//sleep numbers are magic I guess but I really don't think they matter?
-	tension(100);
+	Sleep(IntegrationTestFlag ? 0 : 100);
 	moveCursor(DEALER_LOC);
 	displayHand(d->hand, d->handsize);
-	tension(400);
+	Sleep(IntegrationTestFlag ? 0 : 400);
 	moveCursor(PLAYER_LOC);
 	displayHand(p->hand, p->handsize);
 
@@ -163,7 +164,7 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 	
 	//if dealer has a possibility of blackjack
 	if (getValue(d->hand[0]) >= ROYAL_VAL) {//cant use score here because its specifically about the first card
-		tension(700);//tension
+		Sleep(IntegrationTestFlag ? 0 : 700);//tension
 
 		if (d->state == BJed) {
 			moveCursor(DEALER_LOC);
@@ -301,7 +302,7 @@ void availableMoves(BJPLAYER* p, char options[]) {
 
 
 void dealerTurn(FULLDECK* fd, BJPLAYER* d) {
-	tension(500);//tension
+	Sleep(IntegrationTestFlag ? 0 : 500);//tension
 
 	//reveals their hidden card
 	moveCursor(DEALER_LOC);
@@ -313,7 +314,7 @@ void dealerTurn(FULLDECK* fd, BJPLAYER* d) {
 		d->handsize++;
 		d->score = scoreHand(d->hand, d->handsize, &d->state);
 
-		tension(500);//more tension
+		Sleep(IntegrationTestFlag ? 0 : 500);//more tension
 		moveCursor(DEALER_LOC);//to overwrite previously drawn
 		displayHand(d->hand, d->handsize);
 	}
@@ -327,10 +328,10 @@ void payout(USER* u, BJPLAYER* p, BJPLAYER* d) {
 	displayHand(d->hand, d->handsize);
 
 	if (p->state == Ddowned)
-		tension(600);//tension
+		Sleep(IntegrationTestFlag ? 0 : 600);//tension
 	moveCursor(PLAYER_LOC);
 	displayHand(p->hand, p->handsize);
-	tension(700);//super tension before scoring
+	Sleep(IntegrationTestFlag ? 0 : 700);//super tension before scoring
 
 	//updating final scores
 	p->score = scoreHand(p->hand, p->handsize, &p->state);

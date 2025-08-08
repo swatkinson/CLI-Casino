@@ -5,6 +5,7 @@
 
 // 2D array of symbols for the slot machine (array of strings, since we are using UTF-8 symbols)
 const char* Symbols[] = { "💎", "💲", "🍀", "🪙", "🍒" };
+extern bool IntegrationTestFlag;
 
 void PrintSlotsMenu(int Bet) {
     printf(
@@ -137,7 +138,8 @@ double RunSlots(int Bet) {
     curSymbols[1] = GetRandomSymbol();
     curSymbols[2] = GetRandomSymbol();
 
-    SlotMachineAnimation(curSymbols[0], curSymbols[1], curSymbols[2]);
+   if (!IntegrationTestFlag) 
+       SlotMachineAnimation(curSymbols[0], curSymbols[1], curSymbols[2]);
 
     return CalculateWinnings(curSymbols[0], curSymbols[1], curSymbols[2], Bet);
 }
