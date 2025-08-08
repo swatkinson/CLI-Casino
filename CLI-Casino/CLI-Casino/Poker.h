@@ -7,7 +7,7 @@
 #include "IOController.h"
 #include "FileIO.h"
 
-#define BUY_IN				2
+#define BUY_IN				30
 #define HAND_SIZE			5
 
 typedef struct hand {

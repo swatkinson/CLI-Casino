@@ -216,24 +216,42 @@ bool IsHighCard() {
 void CalculateScore(HAND hand, PUSER user, int* pot) {
 	float mult = 1;
 	
-	if (IsRoyalFlush(hand))
+	if (IsRoyalFlush(hand)) {
+		printf("You got a Royal Flush!\n");
 		mult = 21;
-	else if (IsFourOfaKind(hand))
+	}
+	else if (IsFourOfaKind(hand)) {
+		printf("You got a Four of a Kind!\n");
 		mult = 17;
-	else if (IsFullHouse(hand))
+	}
+	else if (IsFullHouse(hand)) {
+		printf("You got a Full House!\n");
 		mult = 14;
-	else if (IsFlush(hand))
+	}
+	else if (IsFlush(hand)) {
+		printf("You got a Flush!\n");
 		mult = 9;
-	else if (IsStraight(hand))
+	}
+	else if (IsStraight(hand)) {
+		printf("You got a Straight!\n");
 		mult = 6;
-	else if (IsThreeOfaKind(hand))
+	}
+	else if (IsThreeOfaKind(hand)) {
+		printf("You got a Three of a Kind!\n");
 		mult = 4;
-	else if (IsTwoPair(hand))
+	}
+	else if (IsTwoPair(hand)) {
+		printf("You got Two Pair!\n");
 		mult = 1;
-	else if (IsPair(hand))
+	}
+	else if (IsPair(hand)) {
+		printf("You got a Pair!\n");
 		mult = 0.5;
-	else if (IsHighCard())
+	}
+	else if (IsHighCard()) {
+		printf("You got nothing!\n");
 		mult = 0;
+	}
 	else {
 		printf("Invalid hand.");
 		exit(EXIT_FAILURE);
@@ -281,11 +299,11 @@ int CardsToDiscard() {
 			printf("invalid input. Please try again!\n");
 		}
 		else {
-			if (card > HAND_SIZE || card <= 0) {
+			if (card > HAND_SIZE || card < 0) {
 				printf("Invalid number of cards inputed. Please try again!\n");
+				exit(EXIT_FAILURE);
 			}
 			else {
-				
 				return card;
 			}
 		}
@@ -293,35 +311,26 @@ int CardsToDiscard() {
 }
 
 int RedrawCards(HAND* hand, FULLDECK* fd) {
-	printf("Do you want to discard any cards?\n");
-	char answer = GetUserInput("yn");
-
-	if (answer == 'n') return 0;
-
+	
 	int numDiscard = 0;
-	printf("How many cards do you want to discard (1–4)? ");
-	(void)scanf("%d", &numDiscard);
+	while (1) {
+		printf("How many cards do you want to discard (0-5)? ");
+		(void)scanf("%d", &numDiscard);
 
-	if (numDiscard <= 0 || numDiscard >= HAND_SIZE) {
-		printf("Invalid number.\n");
-		return 0;
-	}
+		if (numDiscard < 0 || numDiscard > HAND_SIZE) {
+			printf("Invalid number.\n");
+			
+		}
 
-	int indexes[4] = { -1, -1, -1, -1 };
-	for (int i = 0; i < numDiscard; ++i) {
-		indexes[i] = CardsToDiscard() - 1;
-		if (indexes[i] < 0 || indexes[i] >= HAND_SIZE) {
-			printf("Invalid card number. Try again.\n");
-			return 0;
+		else {
+
+			for (int i = 0; i < numDiscard; ++i) {
+				hand->cards[CardsToDiscard() - 1] = drawCard(fd);
+			}
+
+			return numDiscard;
 		}
 	}
-
-	for (int i = 0; i < numDiscard; ++i) {
-		hand->cards[indexes[i]] = drawCard(fd);
-	}
-
-	SortHandByRank(hand, HAND_SIZE);
-	return numDiscard;
 }
 
 
@@ -335,19 +344,17 @@ void RunPoker(PUSER user, int pot) {
 	hand = DrawCardSorted(&fd, hand, &size);
 	hand = DrawCardSorted(&fd, hand, &size);
 	hand = DrawCardSorted(&fd, hand, &size);
-	displayHand(hand.cards, 5);
+	displayHand(hand.cards, HAND_SIZE);
 	
 	IngamePokerMenu(user, fd, &pot);
 
-	displayHand(hand.cards, 5);
+	displayHand(hand.cards, HAND_SIZE);
 
 	int missing = RedrawCards(&hand, &fd);
 	
-	for (int i = 0; i < missing; i++) {
-		hand = DrawCardSorted(&fd, hand, &size);
-	}
-	
-	displayHand(hand.cards, 5);
+	displayHand(hand.cards, HAND_SIZE);
+
+	SortHandByRank(&hand, HAND_SIZE);
 
 	CalculateScore(hand, user, &pot);
 
@@ -356,7 +363,7 @@ void RunPoker(PUSER user, int pot) {
 }
 
 void PokerMenu(PUSER user) {
-	printf("a. Play\nq. Leave\n");
+	printf("a. Play (buy in - 30)\nq. Leave\n");
 	int pot = 0;
 	
 	char choice = GetUserInput("aq");
