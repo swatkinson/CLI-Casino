@@ -23,7 +23,7 @@ typedef enum { ALL_TEST, SLOT_TEST, POKER_TEST, BLACKJACK_TEST, NO_TEST } TEST_T
 
 #define POKER_FLAG "-poker"
 #define POKER_TEST_FILE "Poker_IntegrationTest.txt"
-#define POKER_EXPECTED_BAL -1 // NOT YET IMPLEMENTED
+#define POKER_EXPECTED_BAL 870
 
 #define BLACKJACK_FLAG "-blackjack"
 #define BLACKJACK_TEST_FILE "Blackjack_IntegrationTest.txt"
