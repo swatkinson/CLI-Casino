@@ -28,7 +28,7 @@ void MainMenu(PUSER User) {
 			break;
 		case 'b':
 			WipeScreen();
-			// PokerGame(User);
+			PokerMenu(User);
 			break;
 		case 'c':
 			WipeScreen();

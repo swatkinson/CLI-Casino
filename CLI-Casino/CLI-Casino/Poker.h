@@ -44,7 +44,7 @@ bool IsPair(HAND hand);
 
 bool IsHighCard();
 
-int CalculateScore();
+int CalculateScore(HAND hand);
 
 //Running the game
 void IngamePokerMenu(PUSER user, FULLDECK fd);

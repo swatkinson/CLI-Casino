@@ -181,24 +181,24 @@ bool IsHighCard() {
 	return true;
 }
 
-int CalculateScore() {
-	if (IsRoyalFlush)
+int CalculateScore(HAND hand) {
+	if (IsRoyalFlush(&hand))
 		return;
-	else if (IsFourOfaKind)
+	else if (IsFourOfaKind(hand))
 		return;
-	else if (IsFullHouse)
+	else if (IsFullHouse(hand))
 		return;
-	else if (IsFlush)
+	else if (IsFlush(hand))
 		return;
-	else if (IsStraight)
+	else if (IsStraight(hand))
 		return;
-	else if (IsThreeOfaKind)
+	else if (IsThreeOfaKind(hand))
 		return;
-	else if (IsTwoPair)
+	else if (IsTwoPair(hand))
 		return;
-	else if (IsPair)
+	else if (IsPair(hand))
 		return;
-	else if (IsHighCard)
+	else if (IsHighCard(hand))
 		return;
 	else {
 		printf("Invalid hand.");
@@ -222,7 +222,7 @@ void IngamePokerMenu(PUSER user, FULLDECK fd) {
 		drawCard(&fd);
 		break;
 	case'b':
-		check();
+		Check();
 		drawCard(&fd);
 		break;
 	case'q':
