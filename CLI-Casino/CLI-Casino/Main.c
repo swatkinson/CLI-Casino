@@ -3,6 +3,7 @@
 
 #include "IOController.h"
 #include "User.h"
+#include "FileIO.h"
 #include <Windows.h>
 #include <time.h>
 #include "IntegrationTest.h"
@@ -14,20 +15,20 @@ int main(void) {
 	WipeScreen(); // Clear the console screen
 
 	// Check & run command line args (will exit if there are args, doesnt run main logic)
-
-	// Run integration tests
+  
+  // Run integration tests
 	//IntegrationTestRunner( ALL_TEST ); // Switch this to the correct TEST_TYPE to run tests, will be changed to command line args in that branch.
+  
+  // User Selection
+	PUSER user = UserMenu();
 
-	// User Selection
-
-	// [DEBUG] INITIALIZE TESTING USER BEFORE LOGIN IS COMPLETE
-	PUSER user = CreateUser("User1", 1000); // Starting balance
+	ClearInputBuffer();
 
 	// Start the main menu loop
 	MainMenu(user);
 
 	// Save user to file 
-
+	UpdateUser(user);
 	// Free user memory
 	DeleteUser(user);
 

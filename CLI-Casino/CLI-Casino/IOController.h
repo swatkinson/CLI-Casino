@@ -6,7 +6,7 @@
 
 void MainMenu(PUSER User);
 
-void DisplayMainMenuOptions();
+void DisplayMainMenuOptions(PUSER User);
 
 char GetUserInput(char* ValidChars);
 
