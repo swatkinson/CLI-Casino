@@ -238,7 +238,9 @@ void CalculateScore(HAND hand, PUSER user, int* pot) {
 		exit(EXIT_FAILURE);
 	}
 
-	user->balance = (*pot * mult) + user->balance;
+	int winnings = (int)(*pot * mult);
+	user->balance += winnings;
+	*pot = 0; // reset pot after payout
 	printf("New balance is: %lf", user->balance);
 }
 
@@ -266,7 +268,6 @@ void IngamePokerMenu(PUSER user, FULLDECK fd, int* pot) {
 	default:
 		break;
 	}
-	ClearInputBuffer();
 	WipeScreen();
 }
 
@@ -297,7 +298,7 @@ int RedrawCards(HAND* hand, FULLDECK* fd) {
 
 	int numDiscard = 0;
 	printf("How many cards do you want to discard (1–4)? ");
-	scanf("%d", &numDiscard);
+	(void)scanf("%d", &numDiscard);
 
 	if (numDiscard <= 0 || numDiscard >= HAND_SIZE) {
 		printf("Invalid number.\n");
@@ -326,6 +327,7 @@ void RunPoker(PUSER user, int pot) {
 	FULLDECK fd = initDeck();
 	HAND hand = { 0 };
 	int size = 0;
+	WipeScreen();
 	hand = DrawCardSorted(&fd, hand, &size);
 	hand = DrawCardSorted(&fd, hand, &size);
 	hand = DrawCardSorted(&fd, hand, &size);
@@ -352,7 +354,7 @@ void RunPoker(PUSER user, int pot) {
 
 void PokerMenu(PUSER user) {
 	printf("a. Play\nq. Leave");
-	int pot;
+	int pot = 0;
 	char choice = GetUserInput("aq");
 
 	switch (choice)
