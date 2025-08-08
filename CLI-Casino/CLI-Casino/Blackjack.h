@@ -1,4 +1,4 @@
-// CLI Casino | Spencer Watkinson - Ricardo Pineda Pelaez - Sebastian Solorzano | CSCN71030
+// CLI Casino | Sebastian Solorzano | CSCN71030
 //interface for blackjack
 #pragma once
 #include "IOController.h"
@@ -16,6 +16,9 @@
 #define OPTION_LOC 27
 #define PLAYER_LOC 29
 #define END_LOC 46
+
+//extern bool IntegrationTestFlag;
+
 
 //player's possible statuses across the game
 typedef enum playerStatus {
@@ -100,6 +103,8 @@ void printOptions(char opt1[], char opt2[], char opt3[], char opt4[]);
 
 //(BJ) prints bet and balance onto the bj menu
 void printBet(int be, int ba);
+
+void tension(int timeMs);
 
 
 

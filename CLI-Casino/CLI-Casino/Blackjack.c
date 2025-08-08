@@ -16,6 +16,7 @@
 #define DDOWN_UB 12
 #define WIND_WID 120
 
+extern bool IntegrationTestFlag;
 
 BJPLAYER initplayer() {
 	BJPLAYER p = { 0 };
@@ -38,7 +39,9 @@ int getBet(USER* u) {
 		moveCursor(END_LOC);
 		printf("input bet (minimum 2):");//no \n here because it messes up the lines
 
-		if (scanf("%d", &bet) || bet < MIN_BET) { //a for garbage inputs in scanf
+		int garb = scanf("%d", &bet);
+		ClearInputBuffer();//for annoying stuff
+		if (garb!=1|| bet < MIN_BET) { //a for garbage inputs in scanf
 			printStatus("please enter valid amount");
 
 		}
@@ -49,7 +52,6 @@ int getBet(USER* u) {
 			u->balance -= bet; //immediatly removes from balance
 			valid = true;
 		}
-		ClearInputBuffer();//for annoying stuff
 	}
 	return bet;
 }
@@ -124,8 +126,6 @@ void playRound(USER* u, FULLDECK* fd, int bet) {
 
 		dealerTurn(fd, &dealer);
 	}
-	else
-		Sleep(1000);//dramatic tension
 
 	if (player.hasSplit)
 		payout(u, &splitp, &dealer); //runs split hand first
@@ -146,11 +146,11 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 
 	//displaying the cards, sleeps are to make it look good (insant full hands looks bad)
 	//sleep numbers are magic I guess but I really don't think they matter?
-	Sleep(100);
+	tension(100);
 	moveCursor(DEALER_LOC);
 	displayHand(d->hand, d->handsize);
-	Sleep(400);
-	moveCursor(DEALER_LOC);
+	tension(400);
+	moveCursor(PLAYER_LOC);
 	displayHand(p->hand, p->handsize);
 
 	//now that we're done printing we can just add dealer's second card to hand, screen won't be updated until dealerturn anyway
@@ -164,7 +164,7 @@ void deal(FULLDECK* fd, BJPLAYER* p, BJPLAYER* d) {
 	
 	//if dealer has a possibility of blackjack
 	if (getValue(d->hand[0]) >= ROYAL_VAL) {//cant use score here because its specifically about the first card
-		Sleep(700);//tension
+		tension(700);
 
 		if (d->state == BJed) {
 			moveCursor(DEALER_LOC);
@@ -302,7 +302,7 @@ void availableMoves(BJPLAYER* p, char options[]) {
 
 
 void dealerTurn(FULLDECK* fd, BJPLAYER* d) {
-	Sleep(500);//tension
+	tension(500);//tension
 
 	//reveals their hidden card
 	moveCursor(DEALER_LOC);
@@ -314,7 +314,7 @@ void dealerTurn(FULLDECK* fd, BJPLAYER* d) {
 		d->handsize++;
 		d->score = scoreHand(d->hand, d->handsize, &d->state);
 
-		Sleep(500);//more tension
+		tension(500);//more tension
 		moveCursor(DEALER_LOC);//to overwrite previously drawn
 		displayHand(d->hand, d->handsize);
 	}
@@ -328,10 +328,10 @@ void payout(USER* u, BJPLAYER* p, BJPLAYER* d) {
 	displayHand(d->hand, d->handsize);
 
 	if (p->state == Ddowned)
-		Sleep(600);//tension
+		tension(600);
 	moveCursor(PLAYER_LOC);
 	displayHand(p->hand, p->handsize);
-	Sleep(700);//super tension before scoring
+	tension(700);
 
 	//updating final scores
 	p->score = scoreHand(p->hand, p->handsize, &p->state);
@@ -457,3 +457,10 @@ void printBet(int be,int ba) {
 	printf("                                     │                   your bet: %-8d|      balance: %-21d│\n",be,ba);
 }
 
+// Sleep for tension between card animations
+void tension(int timeMs){
+	if (IntegrationTestFlag == true)
+		return;
+	else
+		Sleep(timeMs);
+}

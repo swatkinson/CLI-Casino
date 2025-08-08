@@ -3,29 +3,35 @@
 
 #include "IOController.h"
 #include "User.h"
+#include "FileIO.h"
 #include <Windows.h>
 #include <time.h>
+#include "IntegrationTest.h"
+#include <stdbool.h>
 
-int main(void) {
-	
+int main(int argc, char* argv[]) {
 	srand((unsigned int)time(NULL)); // Seed the random number generator
 	SetConsoleOutputCP(CP_UTF8); //Allow UTF8 Console output
-
+	
 	// Check & run command line args (will exit if there are args, doesnt run main logic)
+	TEST_TYPE selectedTests = CheckCommandLineArgs(argc, argv);
+	//selectedTests = ALL_TEST; // [DEBUG] If you're too lazy to run the exe through terminal, you can quick run the tests by uncommenting this line
 
-	// Load users from file
+	WipeScreen(); // Clear the console screen
 
-	// Ask user to select a user
-	// If user wants to make a new user, prompt for username and give default balance
+	// Run integration tests
+	IntegrationTestRunner( selectedTests );
 
-	// [DEBUG] INITIALIZE TESTING USER BEFORE LOGIN IS COMPLETE
-	PUSER user = CreateUser("User1", 1000); // Starting balance
+  // User Selection
+	PUSER user = UserMenu();
+
+	ClearInputBuffer();
 
 	// Start the main menu loop
 	MainMenu(user);
 
 	// Save user to file 
-
+	UpdateUser(user);
 	// Free user memory
 	DeleteUser(user);
 

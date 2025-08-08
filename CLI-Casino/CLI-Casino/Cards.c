@@ -199,6 +199,10 @@ void displayHand(CARD c[], int handsize) {
 
 	char buf[LINE_LEN - 1]; //buffer for printing
 	FILE* fp = fopen("deck.txt", "r"); //file where art is stored
+	if (fp == NULL) {
+		fprintf(stderr, "Error opening deck.txt file. Exiting...");
+		exit(EXIT_FAILURE);
+	}
 
 
 	//rather than reading the file and storing it into an array (which would be huge, 884 * 25),
