@@ -363,21 +363,25 @@ void RunPoker(PUSER user, int pot) {
 }
 
 void PokerMenu(PUSER user) {
-	printf("a. Play (buy in - 30)\nq. Leave\n");
-	int pot = 0;
-	
-	char choice = GetUserInput("aq");
+	while (1) {
+		WipeScreen();
+		printf("a. Play (buy in - 30)\nq. Leave\n");
+		int pot = 0;
 
-	switch (choice)
-	{
-	case'a':
-		if (BuyIn(user, &pot)) {
-			RunPoker(user, pot);
+		char choice = GetUserInput("aq");
+
+		switch (choice)
+		{
+		case'a':
+			if (BuyIn(user, &pot)) {
+				RunPoker(user, pot);
+			}
+			break;
+		case'q':
+			return;
+		default:
+			break;
 		}
-		break;
-	case'q':
-		break;
-	default:
-		break;
 	}
+
 }
