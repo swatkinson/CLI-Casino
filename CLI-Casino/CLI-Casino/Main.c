@@ -16,6 +16,8 @@ int main(void) {
 
 	PUSER user = UserMenu();
 
+	ClearInputBuffer();
+
 	// Start the main menu loop
 	MainMenu(user);
 

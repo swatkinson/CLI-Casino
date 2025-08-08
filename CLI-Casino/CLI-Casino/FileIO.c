@@ -134,7 +134,7 @@ void UpdateUser(PUSER u) {
     fclose(temp);
 
     remove(FILE_NAME);
-    (void)rename("temp.txt", FILE_NAME);
+    (void)rename(TEMP_FILE_NAME, FILE_NAME);
 }
 
 PUSER CreateNewUser() {
@@ -181,7 +181,7 @@ void DeleteUserFromFile() {
     FILE* original = NULL;
     OpenFileInRead(&original);
 
-    FILE* temp = fopen("temp.txt", "w");
+    FILE* temp = fopen(TEMP_FILE_NAME, "w");
     if (temp == NULL) {
         fprintf(stderr, "ERROR: Could not open temp file.\n");
         fclose(original);
@@ -214,7 +214,7 @@ void DeleteUserFromFile() {
     fclose(temp);
 
     remove(FILE_NAME);
-    if (rename("temp.txt", FILE_NAME) == 0) {
+    if (rename(TEMP_FILE_NAME, FILE_NAME) == 0) {
         printf("User deleted successfully");
     }
 
