@@ -35,6 +35,7 @@ bool Raise(PUSER user, int* pot) {
 			}
 		}
 	}
+	ClearInputBuffer();
 }
 
 void Check() {
@@ -241,11 +242,12 @@ void CalculateScore(HAND hand, PUSER user, int* pot) {
 	int winnings = (int)(*pot * mult);
 	user->balance += winnings;
 	*pot = 0; // reset pot after payout
-	printf("New balance is: %lf", user->balance);
+	printf("You won: %d!\n", winnings);
+	printf("New balance is: %.0lf.\n", user->balance);
 }
 
 void IngamePokerMenu(PUSER user, FULLDECK fd, int* pot) {
-	printf("would you like to:\n"
+	printf("Would you like to:\n"
 		"a. Raise\n"
 		"b. Check\n"
 		"q. Fold\n"
@@ -274,7 +276,7 @@ void IngamePokerMenu(PUSER user, FULLDECK fd, int* pot) {
 int CardsToDiscard() {
 	int card = 0;
 	while (1) {
-		printf("Which card would you like to discrad (1-5)");
+		printf("Which card would you like to discard (1-5)");
 		if (scanf("%d", &card) != 1) {
 			printf("invalid input. Please try again!\n");
 		}
@@ -291,7 +293,7 @@ int CardsToDiscard() {
 }
 
 int RedrawCards(HAND* hand, FULLDECK* fd) {
-	printf("Do you want to discard any cards? y/n: ");
+	printf("Do you want to discard any cards?\n");
 	char answer = GetUserInput("yn");
 
 	if (answer == 'n') return 0;
@@ -349,12 +351,14 @@ void RunPoker(PUSER user, int pot) {
 
 	CalculateScore(hand, user, &pot);
 
-	Sleep(2000);
+	ClearInputBuffer();
+	fgetc(stdin);
 }
 
 void PokerMenu(PUSER user) {
-	printf("a. Play\nq. Leave");
+	printf("a. Play\nq. Leave\n");
 	int pot = 0;
+	
 	char choice = GetUserInput("aq");
 
 	switch (choice)

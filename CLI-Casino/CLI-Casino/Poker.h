@@ -59,8 +59,8 @@ void IngamePokerMenu(PUSER user, FULLDECK fd, int* pot);
 
 int CardsToDiscard();
 
-int RedrawCards(HAND hand);
+int RedrawCards(HAND* hand, FULLDECK* fd);
 
-void RunPoker(PUSER user);
+void RunPoker(PUSER user, int pot);
 
 void PokerMenu(PUSER user);
