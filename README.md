@@ -1,6 +1,10 @@
 # CLI-Casino
 Poker, Blackjack, and Slots - Locally in your terminal
 
+# Usage
+Works out of the box on Visual Studio.
+**On command line, you must move the .txt files (deck, and integration tests) from the project file to the build file!**
+
 # Requirements & Design
 ## Module - IOController
 ### Module Description
