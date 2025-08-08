@@ -8,8 +8,6 @@
 #include <stdbool.h>
 
 #include "IntegrationTest.h"
-#include "User.h"
-#include "Slots.h"
 #include <fcntl.h>
 
 typedef enum { ALL_TEST, SLOT_TEST, POKER_TEST, BLACKJACK_TEST, NO_TEST } TEST_TYPE;
@@ -17,12 +15,17 @@ typedef enum { ALL_TEST, SLOT_TEST, POKER_TEST, BLACKJACK_TEST, NO_TEST } TEST_T
 #define DEFAULT_USERNAME "TestUser"
 #define DEFAULT_BALANCE 1000
 
+#define ALL_FLAG "-all"
+
+#define SLOTS_FLAG "-slots"
 #define SLOTS_TEST_FILE "Slots_IntegrationTest.txt"
 #define SLOTS_EXPECTED_BAL 76
 
+#define POKER_FLAG "-poker"
 #define POKER_TEST_FILE "Poker_IntegrationTest.txt"
 #define POKER_EXPECTED_BAL -1 // NOT YET IMPLEMENTED
 
+#define BLACKJACK_FLAG "-blackjack"
 #define BLACKJACK_TEST_FILE "Blackjack_IntegrationTest.txt"
 #define BLACKJACK_EXPECTED_BAL 890
 

@@ -2,6 +2,10 @@
 // Implementation of the Integration Test module
 
 #include "IntegrationTest.h"
+#include "User.h"
+#include <stdlib.h>
+#include "IOController.h"
+#include <Windows.h>
 
 bool IntegrationTestFlag = false;
 
