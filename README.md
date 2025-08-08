@@ -3,7 +3,13 @@ Poker, Blackjack, and Slots - Locally in your terminal
 
 # Usage
 Works out of the box on Visual Studio.  
-**On command line, you must move the .txt files (deck, and integration tests) from the project file to the build file!**
+In the terminal:
+- You must compile the project first
+- and you must **move the .txt files (deck, and integration tests) from the project file to the build file**!
+
+To run integration tests, either change the line in main, or run with command line arguments in the terminal (-all, -poker).  
+Writing './CLICasino.exe -help' prints the usage, if you want a list of all of the flags.
+
 
 # Requirements & Design
 ## Module - IOController
