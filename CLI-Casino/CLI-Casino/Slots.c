@@ -2,6 +2,7 @@
 // Implementation of Slots module
 
 #include "Slots.h"
+#include "ANSImagic.h"
 
 // 2D array of symbols for the slot machine (array of strings, since we are using UTF-8 symbols)
 const char* Symbols[] = { "💎", "💲", "🍀", "🪙", "🍒" };
@@ -202,11 +203,11 @@ void SlotMachineAnimation(const char* S1, const char* S2, const char* S3) {
 void PrintSlotMachine(int Bet) {
     printf( //Spaced out so its in the middle of the screen
         "                                              ⠀⣀⣤⣤⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣤⣤⣀⠀⠀⠀⠀    ┌───────────────┐           \n"
-        "                                              ⠀⢿⣿⣿⣿ CLI CASINO SLOTS ⣿⣿⣿⡿⠀⠀⠀⠀    │  Match of 3   │           \n"
+        "                                              ⠀⢿⣿⣿⣿ \033[%dm\033[%dmCLI CASINO SLOTS\033[0m ⣿⣿⣿⡿⠀⠀⠀⠀    │  Match of 3   │           \n"
         "                                              ⠀⠀⢙⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⡋⠀⠀⠀⠀⠀    │ 💎 = %-9d│          \n"
         "                                              ⠀⠀⢸⣿⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⣿⡇⠀⠀⣤⣄⠀    │ 💲 = %-9d│  \n"
         "                                              ⠀⠀⢸⣿⠀⢸⠛⠛⠛⠛⡇⢸⠛⠛⠛⠛⡇⢸⠛⠛⠛⠛⡇ ⣿⡇⠀⠀⣿⠛⠀    │ 🍀 = %-9d│  \n"
-        "                                              ⠀⠀⢸⣿⠀| 💎 || 💎 || 💎 | ⣿⡇⠀⠀⣿      │ 🪙 = %-9d│   \n"
+        "                                              ⠀⠀⢸⣿⠀| 💎 || 💎 || 💎 | ⣿⡇ ⠀⣿      │ 🪙 = %-9d│   \n"
         "                                              ⠀⠀⢸⣿⠀⢸⣤⣤⣤⣤⡇⢸⣤⣤⣤⣤⡇⢸⣤⣤⣤⣤⡇ ⣿⡇⠀⣾⡇⠀⠀    │ 🍒 = %-9d│  \n"
         "                                              ⠀⠀⢸⣿⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣿⡆⣿⡿⠀⠀⠀    ├───────────────┤          \n"
         "                                              ⠀ ⢀⣴⣿⠟⠛⠛⢻⡿⠛⠛⠛⢻⣿⣿⣿⣿⡟⠋⠉⠉⠛⢿⣦⡀⠀⠀⠀⠀     │ Pairs return  │           \n"
@@ -214,6 +215,6 @@ void PrintSlotMachine(int Bet) {
         "                                              ⠀ ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀     ├───────────────┤           \n"
         "                                              ⠀ ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀     │ 1x 💎 = %-6d│           \n"
         "                                              ⠀ ⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀     └───────────────┘         \n"
-        , Bet * DIAMOND_MODIFIER, Bet * DOLLAR_MODIFIER, Bet * CLOVER_MODIFIER, Bet * COIN_MODIFIER, Bet * CHERRY_MODIFIER
+        ,blink,byellow, Bet * DIAMOND_MODIFIER, Bet * DOLLAR_MODIFIER, Bet * CLOVER_MODIFIER, Bet * COIN_MODIFIER, Bet * CHERRY_MODIFIER
         , DOUBLE_DIVISOR, Bet / 2);
 }

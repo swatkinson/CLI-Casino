@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <Windows.h>
+#include "ANSImagic.h"
 
 
 
@@ -208,12 +209,9 @@ void displayHand(CARD c[], int handsize) {
 	//rather than reading the file and storing it into an array (which would be huge, 884 * 25),
 	//we just jump to where we want and read it directly
 
-	//if we want to add color to the card art, we could add 'control' characters onto the art itself,
-		//and %c for them instead of %s ing lines. this would slow things down, need lottsa if statements, and not work for face cards (too dense, no place to put them)
-	//otherwise we could create a seperate colors file, and reference it when drawing a card. this would still need %c and if statements,
-		//but wouldn't require modification of the original art file
-	//tell me if you can think of a better solution
-
+	//color "solution": whole card is drawn in single color, rather than just parts of it
+	// will be a nightmare once we reach face cards but whatever
+	
 	//lines are drawn one at a time so that cards can be drawn next to each other
 	for (int j = 0; j < NUM_LINES; j++) {
 		for (int i = 0; i < handsize; i++) {
@@ -224,8 +222,29 @@ void displayHand(CARD c[], int handsize) {
 			//copies to buffer and prints
 			fgets(buf, LINE_LEN - 1, fp); //smaller than line so \n gets cut off (intentional)
 			//this is fine because  we end up seeking to somewhere else after that anyways
-			printf("%s", buf);
-			printf("   "); //just a pit of spacing so the cards aren't right next to each other
+
+
+			int color;
+			//colors based on standard for 4-color decks
+			switch (c[i].sui) {
+			case club:
+				color = green;
+				break;
+			case diamond:
+				color = blue;
+				break;
+			case heart:
+				color = red;
+				break;
+			case spade:
+				color = white;
+				break;
+			default:
+				color = reset;//that is, default
+			}//man i dont like switches but is there a better way to do this?
+
+			printf("\033[%dm%s",color, buf);
+			printf("\033[%dm   ",reset); //just a pit of spacing so the cards aren't right next to each other
 		}
 		printf("\n"); //adds newline the current line for all cars has been drawn
 	}

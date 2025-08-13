@@ -139,6 +139,7 @@
     <ClCompile Include="User.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ANSImagic.h" />
     <ClInclude Include="Blackjack.h" />
     <ClInclude Include="Cards.h" />
     <ClInclude Include="FileIO.h" />

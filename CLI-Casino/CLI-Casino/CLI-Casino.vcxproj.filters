@@ -51,6 +51,9 @@
     <ClCompile Include="User.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IntegrationTest.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cards.h">
@@ -73,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="User.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IntegrationTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSImagic.h">
+      <Filter>Header Files\Controllers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

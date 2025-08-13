@@ -10,6 +10,7 @@
 #include "Slots.h"
 #include "Blackjack.h"
 #include "Poker.h"
+#include "ANSImagic.h"
 
 void MainMenu(PUSER User) {
 	while (1)
@@ -83,8 +84,8 @@ char GetUserInput(char* ValidChars) {
 
 void WipeScreen() {
 	system("cls");
-	printf("\033[91m 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 \n \033[0m");
-	printf("\033[90m=======================================================================================================================\n\033[0m");
+	printf("\033[%dm 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 CLI CASINO 💎 💲 🍀 🪙 🍒 \n \033[%dm",bred,reset);
+	printf("\033[%dm=======================================================================================================================\n\033[%dm",gray,reset);
 }
 
 void ClearInputBuffer() {
