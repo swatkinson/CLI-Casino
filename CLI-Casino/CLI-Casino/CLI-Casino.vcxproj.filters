@@ -51,6 +51,12 @@
     <ClCompile Include="User.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IntegrationTest.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LAN.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cards.h">
@@ -72,6 +78,12 @@
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
     <ClInclude Include="User.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LAN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IntegrationTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
