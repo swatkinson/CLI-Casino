@@ -53,10 +53,18 @@ LANEnd should handle 6-7, only does 7 atm
 4-5 must be handled individually at the game/menu level
 */
 
+//LANStart handles 1 - 2
 bool LANStart(PSERVSOCKS ss, PCLIENSOCKS cs);
 
+//runServ handles S3 - S5
 bool runServ(PSERVSOCKS ss);
+//runClien handles C3
 bool runClien(PCLIENSOCKS cs);
 
 //not complete actually
+//LANEnd should handle 6 - 7, only does 7 atm
 bool LANEnd();
+
+//gets the ip address through a really stupid method that might not work everywhere
+//but this whole program was already windows specific so whatever
+void getIPAddress(char result[]);

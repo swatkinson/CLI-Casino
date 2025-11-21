@@ -9,9 +9,8 @@
 
 //my god I think I'm making a monster
 
-
+#define _CRT_SECURE_NO_WARNINGS
 #include "LAN.h"
-
 
 #include <stdio.h>
 #include <Windows.h>
@@ -130,4 +129,48 @@ bool LANEnd() {
 	// same with wsagetlasterror() <-- you literally don't give it anything???
 		//and it just grabs the error code???
 		//this guy's cheating for sure
+}
+
+
+void getIPAddress(char result[]) {
+	//this is incredibly stupid, but somehow still easier than any other option
+	//any useful functions are linux only, and microsoft documentation is incomprehensible
+	//in theory, getaddrinfo() should work, and according to microsoft and stackoverflow, it does, but I cannot for the life of me understand it
+	//it returns(?) a addrinfo struct (wich has to be set up somehow beforehand? mine returned void) that doesn't even have the ip in it?
+		//it has like a further struct, which has a 'canonical name' whatever the hell that is, and a bunch of other stuff I don't get
+	//ANYWAYS
+	// gethostname --> gethostbyname also SHOULD work, but micro says its deprecated and also it gave me my ethernet address instead of my wifi
+		//and I don't know how to make it not do that
+	//like I said, everything is either for linux, incomprehensible, or both, so i'm just doing this instead (as stupid as it is)
+	//'this' being running an ipconfig system call and then parsing the results for the ip address
+
+	char in[120]; //longest line it returns isn't much longer than this
+	FILE* fp = _popen("ipconfig", "r"); 
+	//runs the system command into a 'pipe', whatever that is, and pretend its a file so it doesn't show up in terminal
+	//windows doesn't like it (see the _ in front) but what else is new)
+
+
+
+	while (strcmp(in, "Wireless LAN adapter Wi-Fi:\n") != 0) { //latest consistent line we can look for since addresses will naturally be different
+		fgets(in, sizeof(in), fp);
+	}
+	fgets(in, sizeof(in), fp); //throws away blankspace line
+	fgets(in, sizeof(in), fp); //throws away 'connection specific dns suffix' line
+	fgets(in, sizeof(in), fp); //throws away 'link local ipv6 address' line
+	fgets(in, sizeof(in), fp); //the one we want!
+
+	//now we're at the right line, but there's extra info we don't need
+	//I could have used sscanf or something similar, but I found this first and it seems to work
+	char* IP_address;
+	strtok(in, ":"); //throws away 'ipv4 adress . . . . . . :'
+	IP_address = strtok(NULL, " "); //and here it is!! we're not directly using it so a string is fine
+	//also strtok is really weird and ends up storing the string in the void or something, which is why null is used on the second call
+	//don't ask me
+
+	//i forgot how messy c strings are, but this should work
+	*result = IP_address;
+
+	//this code SUCKS and seems very dependant on windows behaving exactly as it does when I wrote it
+		//which we all know is a terrible thing to hope for
+	//problems i see: _popen is unstrustworthy ; ipconfig return could change at any time ; strtok doesn't seem great either
 }
