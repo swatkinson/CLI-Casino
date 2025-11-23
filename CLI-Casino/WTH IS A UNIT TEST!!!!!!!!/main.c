@@ -6,7 +6,7 @@
 //so I made this because how else am i supposed to test the network code when we have the entire rest of the project running
 
 int main(void) {
-/*
+
 	CLIENSOCKS CS;
 	SERVSOCKS SS;
 
@@ -23,8 +23,9 @@ int main(void) {
 	}
 
 	LANEnd();
+	
 	return 0;
-	*/
+	
 /*
 WSADATA wsa;
 if( (WSAStartup(MAKEWORD(2, 1), &wsa)) != 0)
@@ -51,6 +52,8 @@ source.sin_family = hp->h_addrtype;
 
 printf("Local IP Address %s\n", inet_ntoa(source.sin_addr));
 */
+
+	/*
 	char in[150];
 	int a=0;
 	FILE* fp = _popen("ipconfig", "r");
@@ -68,5 +71,18 @@ printf("Local IP Address %s\n", inet_ntoa(source.sin_addr));
 	ip = strtok(NULL, " ");
 
 
-	printf("%s",ip);
+	//printf("%s",ip);
+	
+	int pi = ip;
+	printf("%s, %d\n", ip,pi);
+
+	pi = ~pi;
+	printf(" %d\n", pi);
+
+	pi = ~pi;
+	printf("% d\n", pi);
+	char* ei = pi;
+	printf("%s\n", ei);
+	//((0x0000FFFF & n) << 16) + ((0xFFFF0000 & n) >> 16);
+	*/
 }

@@ -68,3 +68,6 @@ bool LANEnd();
 //gets the ip address through a really stupid method that might not work everywhere
 //but this whole program was already windows specific so whatever
 void getIPAddress(char result[]);
+
+
+bool inputIPAddress(char result[]);
